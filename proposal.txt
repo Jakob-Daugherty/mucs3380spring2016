@@ -1,0 +1,5 @@
+This can be used to write the proposal if we desire. 
+Else we can use a word document and include it in the git repository 
+
+The git repository is located at: https://github.com/jadppf/mucs3380spring2016.git
+
