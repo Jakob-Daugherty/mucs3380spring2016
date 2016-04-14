@@ -58,3 +58,10 @@ Hunter Ginther - Functionality / PHP Backend system
 Zach Dolan - UI / HTML web application
 Kevin Free - Functionality / PHP Backend system
 ALL - Database work / MySQL
+
+
+The purpose of this project, is to redesign the checkout/in system for MU Student Center Help Desks. Thus most elements of CSS and final design will be based off of their old system, and be implemented in the final stages of the project. I would also like to direct your attention to the attached list of questions. In that list you will find our initial questions about how the system should function. We have chosen to use GitHub to assist with code merger and editing within the group. Additionally, we will be using one Azure Virtual Machine to host the backend database and web scripts. The tentative group work distribution above outlines each team members roll in the project. However, this is to remain flexible so that we can best utilize all member’s skills and knowledge. 
+	
+
+The documentation will be compiled together as the project progresses. Insuring to include all functionality and information about the system. By the end of the first week, we hope to have a functional version of the backend database. Additionally, the outline for the PHP and HTML documents should be started. Then by the end of the second week, we hope to have a functional web system capable of retrieving and processing data. Laying the foundation for functionality improvements, and possible redesign. At this point, we hope to go back to the client for more information on possible improvements and changes. To be implemented by the end of week three. Finally, with the system fully functional we plan to clean up the UI, and give the system a modern, user-friendly look.  
+
