@@ -1,67 +1,34 @@
-This can be used to write the proposal if we desire. 
-Else we can use a word document and include it in the git repository 
+Project Proposal
+The purpose of this project is to redesign the check-out/check-in system for items such as laptops, bikes and chargers from the MU Student Center Help Desks. Thus, most elements of CSS and final design will be based off of their old system, and will be implemented in the final stages of the project. I would also like to direct your attention to the list of questions below. In that list, you will find our initial questions about how the system should function which will guide how we design the database and implement the functionality in the system we create. We have chosen to use GitHub to assist with code merger and editing within the group. Additionally, we will be using one Azure Virtual Machine to host the backend database and web scripts. The tentative group work distribution below outlines each team member’s role in the project. However, this is to remain flexible so that we can best utilize all member’s skills and knowledge. 
+Group work distribution:  Alyssa Nielsen will be the team lead, and will be responsible for coordinating group meetings, report writing assignments, and presentation preparation.  She will also be helping with the functionality, user interface and HTML web application areas and database work.  Jakob Daugherty will be helping with report writing assignments, presentation preparation, coordinating version control using Github for group collaboration, as well as working on the functionality, PHP backend system, and database work.  Michael McLaughlin and Kevin Free will both be working on the functionality, user interface, main HTML web application work and database work.  Zach Dolan and Hunter Ginther will be working on the functionality, main PHP backend system work and database work.  We will all be reviewing and giving input on all aspects of the project, but plan to begin by focusing on those areas. 
+The documentation will be compiled together as the project progresses. Insuring to include all functionality and information about the system. By April 19th, we hope to have a functional version of the backend database. Additionally, the outline for the PHP and HTML documents will be started. Then by April 26th, we hope to have a functional web system capable of retrieving and processing data, with basic working versions of each page we plan to implement in our web application.  This will lay the foundation for functionality improvements, and possible redesign. At this point, we hope to go back to the client for more information on possible improvements and changes. The additional changes and improvements are to be implemented by May 1st.  Finally, with the system fully functional, we plan to clean up the user interface and give the system a modern, user-friendly look by the week of May 2nd when we will present our project.  We will finalize our documentation and any small changes to our project by May 13th when we turn in our final report.
 
-The git repository is located at: https://github.com/jadppf/mucs3380spring2016.git
 
-20 Questions for the client:
-
+Questions regarding funtionality:
 1. How would you like the automated email set-up?
    - What account/where would you like the email to be from?
-   
 2. What would be in the email? (is their a template you’d like us to follow?)
-
 3. How would you like to manage locations?
   - Do you want specific views for each or simply a note/something that says what location?
-
 4. What information would you like users to be able to edit? (are their certain restrictions?)
-
 5. What are the default group time limits for items? (maybe a list of all of them)
-
 6. Is adding a user manually something that should be implemented, or is it only supposed to access members of an already established database?
-
 7. Do you want all information about each item displayed, or only the item number and if it's available?
-
 8. What options other than check out/in do you want? I know there's an option to display whether the customer is banned from checking out equipment; should there be other statuses based on the customer, such as not letting them check out only certain items?
-
 9. Should there be a tab to display all the customers that have an item checked out for an extended period of time?/Customers that are on a "late list"?
-
 10. What exactly should be contained in the email to SAS IT about an item’s broken condition?
-
 11. Are there items that belong specifically to Memorial Union or the Student Center and can all items be checked out and returned at   different places?
-
 12. Is there a limit to how many times an item can be renewed?
-
 13. Should there be some sort of history kept for each item as to who has checked it out and when?
-
 14. Do you want to be able to check an item out at one location and return it to another?
-
 15. How do you want the renewal button to be accessed? 
     - Could a student renew their own laptop, or can only an employee renew a rental?
-    
 16. When adding/removing desk locations or items, how do you want that organized?  
-
 17. Do you want adding/removing to be only admin access, or any employee can add/remove an item?
-    
 18. Where do you want overdue notifications to show up?
-    - Do you want the pop up to show on the checkin/out computer, or on the student checked out laptop?
-    
+    - Do you want the pop up to show on the check-in/out computer, or on the student checked out laptop?
 19. What kind of tags are going to be attached to the items? 
-
 20. Should there be a homepage / dashboard showing the status of all checked out items?
 
 
-Group / work division:  
-Alyssa Nielsen - team lead / documentation / UI / HTML web application
-Jakob Daugherty - Functionalty / Documentation / PHP Backend system
-Michael McLaughlin - Functionality / HTML web application
-Hunter Ginther - Functionality / PHP Backend system
-Zach Dolan - UI / HTML web application
-Kevin Free - Functionality / PHP Backend system
-ALL - Database work / MySQL
-
-
-The purpose of this project, is to redesign the checkout/in system for MU Student Center Help Desks. Thus most elements of CSS and final design will be based off of their old system, and be implemented in the final stages of the project. I would also like to direct your attention to the attached list of questions. In that list you will find our initial questions about how the system should function. We have chosen to use GitHub to assist with code merger and editing within the group. Additionally, we will be using one Azure Virtual Machine to host the backend database and web scripts. The tentative group work distribution above outlines each team members roll in the project. However, this is to remain flexible so that we can best utilize all member’s skills and knowledge. 
-	
-
-The documentation will be compiled together as the project progresses. Insuring to include all functionality and information about the system. By the end of the first week, we hope to have a functional version of the backend database. Additionally, the outline for the PHP and HTML documents should be started. Then by the end of the second week, we hope to have a functional web system capable of retrieving and processing data. Laying the foundation for functionality improvements, and possible redesign. At this point, we hope to go back to the client for more information on possible improvements and changes. To be implemented by the end of week three. Finally, with the system fully functional we plan to clean up the UI, and give the system a modern, user-friendly look.  
 
