@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <?php
 
-$link = mysqli_connect("localhost", "root", "72riXXbENz", "FinalProject") or die ("Connection Error " . mysqli_error($link));
+$link = mysqli_connect("localhost", "zmd989", "sc2cba7h", "FinalProject") or die ("Connection Error " . mysqli_error($link));
 
 //display non-editable textbox for attribute $key
 function printNonEditable($key) {
