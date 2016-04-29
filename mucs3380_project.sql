@@ -1,7 +1,4 @@
--- Edited by Hunter G. 4/24/2016
-
--- DDL for the database we create
--- CREATE DATABASE `??`;
+-- Edited by Hunter G. 4/28/2016
 
 -- student TABLE
 DROP TABLE IF EXISTS `student`;
@@ -22,6 +19,8 @@ CREATE TABLE `employee` (
     `id` INTEGER NOT NULL,
     `username` VARCHAR(16) NOT NULL,
     `email` VARCHAR(255) NOT NULL,
+    `salt` VARCHAR(20) NOT NULL,
+    `hashed_password` VARCHAR(256) NOT NULL,
     `name_first` VARCHAR(30) DEFAULT NULL,
     `name_last` VARCHAR(45) NOT NULL,
     PRIMARY KEY(`id`)
@@ -101,6 +100,8 @@ CREATE TABLE `item_category` (
     `id` INTEGER NOT NULL,
     `name` VARCHAR(250) NOT NULL,
     `waiver` INT,
+    `item_id` INTEGER NOT NULL,
+    FOREIGN KEY (`item_id`) REFERENCES `item`(`id`),
     PRIMARY KEY(`id`)
 ) ENGINE = InnoDB;
 
@@ -126,8 +127,15 @@ DROP TABLE IF EXISTS `student_item_transaction`;
 CREATE TABLE `student_item_transaction` (
     `student_id` INTEGER NOT NULL,
     `item_id` INTEGER NOT NULL,
-    -- OTHER ATTRIBUTES THAT GO IN THIS TABLE
+    `employee_id` INTEGER NOT NULL,
+    `location_id` INTEGER NOT NULL,
+    `item_condition_id` INTEGER NOT NULL,
+    `transaction_type` VARCHAR(50) DEFAULT NULL, -- Made it hold STRINGS rather than INTEGERS and making another table
+    `transaction_datetime` DATETIME,
     FOREIGN KEY (`student_id`) REFERENCES `student`(`id`),
     FOREIGN KEY (`item_id`) REFERENCES `item`(`id`),
-    PRIMARY KEY(`student_id`, `item_id`)
+    FOREIGN KEY (`employee_id`) REFERENCES `employee`(`id`),
+    FOREIGN KEY (`location_id`) REFERENCES `location`(`id`),
+    FOREIGN KEY (`item_condition_id`) REFERENCES `item_condition`(`id`),
+    PRIMARY KEY(`student_id`, `item_id`, `employee_id`)
 ) ENGINE = InnoDB;
