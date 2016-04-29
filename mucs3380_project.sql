@@ -1,5 +1,17 @@
 -- Edited by Hunter G. 4/28/2016
 
+DROP TABLE IF EXISTS `student_item_transaction`;
+DROP TABLE IF EXISTS `item_category`;
+DROP TABLE IF EXISTS `item_condition_update`;
+DROP TABLE IF EXISTS `item_condition`;
+DROP TABLE IF EXISTS `expired_waiver`;
+DROP TABLE IF EXISTS `employee_permissions`;
+DROP TABLE IF EXISTS `location`;
+DROP TABLE IF EXISTS `item`;
+DROP TABLE IF EXISTS `waiver`;
+DROP TABLE IF EXISTS `student`;
+DROP TABLE IF EXISTS `employee`;
+
 -- student TABLE
 DROP TABLE IF EXISTS `student`;
 CREATE TABLE `student` (
