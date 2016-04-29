@@ -12,7 +12,7 @@ CREATE TABLE `student` (
     `name_first` VARCHAR(30) DEFAULT NULL,
     `name_last` VARCHAR(45) NOT NULL,
     PRIMARY KEY(`id`)
-) ENGINE = InnoDB;
+) ENGINE = INNODB;
 
 -- 
 -- employee TABLE
@@ -25,7 +25,7 @@ CREATE TABLE `employee` (
     `name_first` VARCHAR(30) DEFAULT NULL,
     `name_last` VARCHAR(45) NOT NULL,
     PRIMARY KEY(`id`)
-) ENGINE = InnoDB;
+) ENGINE = INNODB;
 
 -- 
 -- employee_permissions TABLE
@@ -35,7 +35,7 @@ CREATE TABLE `employee_permissions` (
     `id` INTEGER NOT NULL,
     `name` VARCHAR(250) NOT NULL,
     PRIMARY KEY(`id`)
-) ENGINE = InnoDB;
+) ENGINE = INNODB;
 
 -- 
 -- location TABLE
@@ -46,7 +46,7 @@ CREATE TABLE `location` (
     `name` VARCHAR(250) DEFAULT NULL,
     `terminal_id` INTEGER NOT NULL,
     PRIMARY KEY(`id`, `terminal_id`)
-) ENGINE = InnoDB;
+) ENGINE = INNODB;
 
 -- 
 -- waiver TABLE
@@ -56,7 +56,7 @@ CREATE TABLE `waiver` (
     `id` INTEGER NOT NULL,
     `name` VARCHAR(250) NOT NULL,
     PRIMARY KEY(`id`)
-) ENGINE = InnoDB;
+) ENGINE = INNODB;
 
 -- 
 -- expired_waiver TABLE
@@ -67,10 +67,10 @@ CREATE TABLE `expired_waiver` (
     `waiver_id` INTEGER NOT NULL,
     `initialized` DATETIME NOT NULL,
     `expires` DATETIME NOT NULL,
-    FOREIGN KEY (`student_id`) REFERENCES `student`(`id`),
-    FOREIGN KEY (`waiver_id`) REFERENCES `waiver`(`id`),
+    FOREIGN KEY (`student_id`) REFERENCES `student`(`id`) ON DELETE CASCADE,
+    FOREIGN KEY (`waiver_id`) REFERENCES `waiver`(`id`) ON DELETE CASCADE,
     PRIMARY KEY(`student_id`, `waiver_id`)
-) ENGINE = InnoDB;
+) ENGINE = INNODB;
 
 -- 
 -- item TABLE
@@ -81,7 +81,7 @@ CREATE TABLE `item` (
     `name` VARCHAR(250) NOT NULL,
     `available` TINYINT(1) NOT NULL,
     PRIMARY KEY(`id`)
-) ENGINE = InnoDB;
+) ENGINE = INNODB;
 
 -- 
 -- item_condition TABLE
@@ -91,7 +91,7 @@ CREATE TABLE `item_condition` (
     `id` INTEGER NOT NULL,
     `name` VARCHAR(250) NOT NULL,
     PRIMARY KEY(`id`)
-) ENGINE = InnoDB;
+) ENGINE = INNODB;
 
 -- 
 -- item_category TABLE
@@ -102,7 +102,7 @@ CREATE TABLE `item_category` (
     `name` VARCHAR(250) NOT NULL,
     `waiver` INT,
     PRIMARY KEY(`id`)
-) ENGINE = InnoDB;
+) ENGINE = INNODB;
 
 -- 
 -- item_condition_update TABLE
@@ -115,9 +115,9 @@ CREATE TABLE `item_condition_update` (
     `date_time` DATETIME NOT NULL,
     `employee_id` INTEGER NOT NULL,
     `item_condition_updatecol` VARCHAR(45) DEFAULT NULL,
-    FOREIGN KEY (`item_id`) REFERENCES `item`(`id`),
+    FOREIGN KEY (`item_id`) REFERENCES `item`(`id`) ON DELETE CASCADE,
     PRIMARY KEY(`date_time`, `item_id`)
-) ENGINE = InnoDB;
+) ENGINE = INNODB;
 
 -- 
 -- student_item_transaction TABLE
@@ -127,7 +127,7 @@ CREATE TABLE `student_item_transaction` (
     `student_id` INTEGER NOT NULL,
     `item_id` INTEGER NOT NULL,
     -- OTHER ATTRIBUTES THAT GO IN THIS TABLE
-    FOREIGN KEY (`student_id`) REFERENCES `student`(`id`),
-    FOREIGN KEY (`item_id`) REFERENCES `item`(`id`),
+    FOREIGN KEY (`student_id`) REFERENCES `student`(`id`) ON DELETE CASCADE,
+    FOREIGN KEY (`item_id`) REFERENCES `item`(`id`) ON DELETE CASCADE,
     PRIMARY KEY(`student_id`, `item_id`)
-) ENGINE = InnoDB;
+) ENGINE = INNODB;
