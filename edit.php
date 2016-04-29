@@ -1,7 +1,11 @@
 <!DOCTYPE html>
 <?php
 
+<<<<<<< HEAD
 $link = mysqli_connect("localhost", "zmd989", "sc2cba7h", "FinalProject") or die ("Connection Error " . mysqli_error($link));
+=======
+$link = mysqli_connect("localhost", "root", "gz4kqe8h", "database") or die ("Connection Error " . mysqli_error($link));
+>>>>>>> parent of 9b1ea41... I updated the login information so that it will actually connect. Right now I just got rid of the connection error pop up.
 
 //display non-editable textbox for attribute $key
 function printNonEditable($key) {
