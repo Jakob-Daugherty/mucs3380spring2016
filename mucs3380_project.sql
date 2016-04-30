@@ -156,4 +156,5 @@ CREATE TABLE `student_item_transaction` (
     PRIMARY KEY(`student_id`, `item_id`, `employee_id`)
 ) ENGINE = INNODB;
 
--- INSERT INTO employee (id,username,email,salt,hashed_password,name_first,name_last) VALUES (123456 , 'adminUser', 'testemail@mail.missouri.edu', '1419814819', '$2y$10$3FleH8rp.AcSuPg4BDAm7epLg3sw6yZ1XcS0VIMmDRQXTSV/4wWwK', 'Adam', 'U');
+-- INSERT INTO employee (id,username,user_type,email,salt,hashed_password,name_first,name_last) VALUES (123456 , 'adminUser', '1', 'testemail@mail.missouri.edu', '1419814819', '$2y$10$3FleH8rp.AcSuPg4BDAm7epLg3sw6yZ1XcS0VIMmDRQXTSV/4wWwK', 'Adam', 'U');
+-- INSERT INTO employee (id,username,user_type,email,salt,hashed_password,name_first,name_last) VALUES (654321 , 'regularUser', '0', 'test@mail.missouri.edu', '2106281797', '$2y$10$18yilYZNmpONY9DKG0ZIh.sqNkRSfW.6Y/siAfVofEfX.cII9qRxu', 'Dude', 'U');
