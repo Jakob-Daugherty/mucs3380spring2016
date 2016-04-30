@@ -92,6 +92,8 @@ CREATE TABLE `item` (
     `id` INTEGER NOT NULL,
     `name` VARCHAR(250) NOT NULL,
     `available` TINYINT(1) NOT NULL,
+    `item_condition_id` INTEGER NOT NULL,
+    FOREIGN KEY (`item_condition_id`) REFERENCES `item_condition`(`id`) ON DELETE CASCADE,
     PRIMARY KEY(`id`)
 ) ENGINE = INNODB;
 
@@ -114,7 +116,7 @@ CREATE TABLE `item_category` (
     `name` VARCHAR(250) NOT NULL,
     `waiver` INT,
     `item_id` INTEGER NOT NULL,
-    FOREIGN KEY (`item_id`) REFERENCES `item`(`id`),
+    FOREIGN KEY (`item_id`) REFERENCES `item`(`id`) ON DELETE CASCADE,
     PRIMARY KEY(`id`)
 ) ENGINE = INNODB;
 
