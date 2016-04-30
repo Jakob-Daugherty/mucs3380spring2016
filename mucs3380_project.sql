@@ -30,11 +30,13 @@ DROP TABLE IF EXISTS `employee`;
 CREATE TABLE `employee` (
     `id` INTEGER NOT NULL,
     `username` VARCHAR(16) NOT NULL,
+    `user_type` INTEGER NOT NULL,
     `email` VARCHAR(255) NOT NULL,
     `salt` VARCHAR(20) NOT NULL,
     `hashed_password` VARCHAR(256) NOT NULL,
     `name_first` VARCHAR(30) DEFAULT NULL,
     `name_last` VARCHAR(45) NOT NULL,
+    FOREIGN KEY (`user_type`) REFERENCES `employee_permissions`(`id`) ON DELETE CASCADE,
     PRIMARY KEY(`id`)
 ) ENGINE = INNODB;
 
@@ -44,7 +46,6 @@ CREATE TABLE `employee` (
 DROP TABLE IF EXISTS `employee_permissions`;
 CREATE TABLE `employee_permissions` (
     `id` INTEGER NOT NULL,
-    `user_type` VARCHAR(50),
     `name` VARCHAR(250) NOT NULL,
     PRIMARY KEY(`id`)
 ) ENGINE = INNODB;
