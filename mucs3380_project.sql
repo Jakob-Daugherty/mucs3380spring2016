@@ -94,7 +94,9 @@ CREATE TABLE `item` (
     `name` VARCHAR(250) NOT NULL,
     `available` TINYINT(1) NOT NULL,
     `item_condition_id` INTEGER NOT NULL,
+    `location_id` INTEGER NOT NULL,
     FOREIGN KEY (`item_condition_id`) REFERENCES `item_condition`(`id`) ON DELETE CASCADE,
+    FOREIGN KEY (`location_id`) REFERENCES `location`(`id`) ON DELETE CASCADE,
     PRIMARY KEY(`id`)
 ) ENGINE = INNODB;
 
