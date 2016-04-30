@@ -44,6 +44,7 @@ CREATE TABLE `employee` (
 DROP TABLE IF EXISTS `employee_permissions`;
 CREATE TABLE `employee_permissions` (
     `id` INTEGER NOT NULL,
+    `user_type` VARCHAR(50),
     `name` VARCHAR(250) NOT NULL,
     PRIMARY KEY(`id`)
 ) ENGINE = INNODB;
