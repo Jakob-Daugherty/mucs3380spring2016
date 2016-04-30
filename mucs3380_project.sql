@@ -140,23 +140,17 @@ DROP TABLE IF EXISTS `student_item_transaction`;
 CREATE TABLE `student_item_transaction` (
     `student_id` INTEGER NOT NULL,
     `item_id` INTEGER NOT NULL,
-<<<<<<< HEAD
     `employee_id` INTEGER NOT NULL,
     `location_id` INTEGER NOT NULL,
     `item_condition_id` INTEGER NOT NULL,
     `transaction_type` VARCHAR(50) DEFAULT NULL, -- Made it hold STRINGS rather than INTEGERS and making another table
     `transaction_datetime` DATETIME,
-    FOREIGN KEY (`student_id`) REFERENCES `student`(`id`),
-    FOREIGN KEY (`item_id`) REFERENCES `item`(`id`),
-    FOREIGN KEY (`employee_id`) REFERENCES `employee`(`id`),
-    FOREIGN KEY (`location_id`) REFERENCES `location`(`id`),
-    FOREIGN KEY (`item_condition_id`) REFERENCES `item_condition`(`id`),
-    PRIMARY KEY(`student_id`, `item_id`, `employee_id`)
-) ENGINE = InnoDB;
-=======
-    -- OTHER ATTRIBUTES THAT GO IN THIS TABLE
     FOREIGN KEY (`student_id`) REFERENCES `student`(`id`) ON DELETE CASCADE,
     FOREIGN KEY (`item_id`) REFERENCES `item`(`id`) ON DELETE CASCADE,
-    PRIMARY KEY(`student_id`, `item_id`)
+    FOREIGN KEY (`employee_id`) REFERENCES `employee`(`id`) ON DELETE CASCADE,
+    FOREIGN KEY (`location_id`) REFERENCES `location`(`id`) ON DELETE CASCADE,
+    FOREIGN KEY (`item_condition_id`) REFERENCES `item_condition`(`id`) ON DELETE CASCADE,
+    PRIMARY KEY(`student_id`, `item_id`, `employee_id`)
 ) ENGINE = INNODB;
->>>>>>> origin/master
+
+-- INSERT INTO employee (id,username,email,salt,hashed_password,name_first,name_last) VALUES (123456 , 'adminUser', 'testemail@mail.missouri.edu', '1419814819', '$2y$10$3FleH8rp.AcSuPg4BDAm7epLg3sw6yZ1XcS0VIMmDRQXTSV/4wWwK', 'Adam', 'U');
