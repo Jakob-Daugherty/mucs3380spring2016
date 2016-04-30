@@ -36,15 +36,15 @@
     					<div class="row form-group">
     						<label class='inputdefault'>User Type</label>
     						<div class="radio">
-    							<label><input type="radio" name="user_type" value = "1">Admin</label>
+    							<label><input type="radio" name="user_type" value = "1">Administrator</label>
     						</div> 
     						<div class="radio">
-    							<label><input type="radio" name="user_type" value = "NULL">Normal</label>
+    							<label><input type="radio" name="user_type" value = "NULL">Regular User</label>
     						</div>
     					</div>
     					<div class="row form-group">
     						<input class=" btn btn-info" type="submit" name="submit" value="Register"/>
-    						<a href="index.php" class="btn btn-primary">Back to Home</a>
+    						<a href="index.php" class="btn btn-primary text">Back to Summary Page</a>
     					</div>
     				</form>
     			</div>
@@ -55,7 +55,7 @@
 						echo "<div class='alert alert-warning'>Please fill out the form completely</div>";
 						exit;
 					}
-					$link = mysqli_connect("localhost", "zmd989", "sc2cba7h", "FinalProject")  or die ("Connection Error " . mysqli_error($link)); //Can't give away my password
+					$link = mysqli_connect("localhost", "root", "lyss11246!", "lab8db")  or die ("Connection Error " . mysqli_error($link)); //Can't give away my password
 					$sql = "INSERT INTO user(username,salt,hashed_password,admin) VALUES (?,?,?,?)";
 					if ($stmt = mysqli_prepare($link, $sql)) {
 						$user = $_POST['username'];
