@@ -1,7 +1,16 @@
--- Edited by Hunter G. 4/24/2016
+-- Edited by Hunter G. 4/28/2016
 
--- DDL for the database we create
--- CREATE DATABASE `??`;
+DROP TABLE IF EXISTS `student_item_transaction`;
+DROP TABLE IF EXISTS `item_category`;
+DROP TABLE IF EXISTS `item_condition_update`;
+DROP TABLE IF EXISTS `item_condition`;
+DROP TABLE IF EXISTS `expired_waiver`;
+DROP TABLE IF EXISTS `employee_permissions`;
+DROP TABLE IF EXISTS `location`;
+DROP TABLE IF EXISTS `item`;
+DROP TABLE IF EXISTS `waiver`;
+DROP TABLE IF EXISTS `student`;
+DROP TABLE IF EXISTS `employee`;
 
 -- student TABLE
 DROP TABLE IF EXISTS `student`;
@@ -21,9 +30,13 @@ DROP TABLE IF EXISTS `employee`;
 CREATE TABLE `employee` (
     `id` INTEGER NOT NULL,
     `username` VARCHAR(16) NOT NULL,
+    `user_type` INTEGER NOT NULL,
     `email` VARCHAR(255) NOT NULL,
+    `salt` VARCHAR(20) NOT NULL,
+    `hashed_password` VARCHAR(256) NOT NULL,
     `name_first` VARCHAR(30) DEFAULT NULL,
     `name_last` VARCHAR(45) NOT NULL,
+    FOREIGN KEY (`user_type`) REFERENCES `employee_permissions`(`id`) ON DELETE CASCADE,
     PRIMARY KEY(`id`)
 ) ENGINE = INNODB;
 
@@ -80,6 +93,10 @@ CREATE TABLE `item` (
     `id` INTEGER NOT NULL,
     `name` VARCHAR(250) NOT NULL,
     `available` TINYINT(1) NOT NULL,
+    `item_condition_id` INTEGER NOT NULL,
+    `location_id` INTEGER NOT NULL,
+    FOREIGN KEY (`item_condition_id`) REFERENCES `item_condition`(`id`) ON DELETE CASCADE,
+    FOREIGN KEY (`location_id`) REFERENCES `location`(`id`) ON DELETE CASCADE,
     PRIMARY KEY(`id`)
 ) ENGINE = INNODB;
 
@@ -101,6 +118,8 @@ CREATE TABLE `item_category` (
     `id` INTEGER NOT NULL,
     `name` VARCHAR(250) NOT NULL,
     `waiver` INT,
+    `item_id` INTEGER NOT NULL,
+    FOREIGN KEY (`item_id`) REFERENCES `item`(`id`) ON DELETE CASCADE,
     PRIMARY KEY(`id`)
 ) ENGINE = INNODB;
 
@@ -126,8 +145,18 @@ DROP TABLE IF EXISTS `student_item_transaction`;
 CREATE TABLE `student_item_transaction` (
     `student_id` INTEGER NOT NULL,
     `item_id` INTEGER NOT NULL,
-    -- OTHER ATTRIBUTES THAT GO IN THIS TABLE
+    `employee_id` INTEGER NOT NULL,
+    `location_id` INTEGER NOT NULL,
+    `item_condition_id` INTEGER NOT NULL,
+    `transaction_type` VARCHAR(50) DEFAULT NULL, -- Made it hold STRINGS rather than INTEGERS and making another table
+    `transaction_datetime` DATETIME,
     FOREIGN KEY (`student_id`) REFERENCES `student`(`id`) ON DELETE CASCADE,
     FOREIGN KEY (`item_id`) REFERENCES `item`(`id`) ON DELETE CASCADE,
-    PRIMARY KEY(`student_id`, `item_id`)
+    FOREIGN KEY (`employee_id`) REFERENCES `employee`(`id`) ON DELETE CASCADE,
+    FOREIGN KEY (`location_id`) REFERENCES `location`(`id`) ON DELETE CASCADE,
+    FOREIGN KEY (`item_condition_id`) REFERENCES `item_condition`(`id`) ON DELETE CASCADE,
+    PRIMARY KEY(`student_id`, `item_id`, `employee_id`)
 ) ENGINE = INNODB;
+
+-- INSERT INTO employee (id,username,user_type,email,salt,hashed_password,name_first,name_last) VALUES (123456 , 'adminUser', '1', 'testemail@mail.missouri.edu', '1419814819', '$2y$10$3FleH8rp.AcSuPg4BDAm7epLg3sw6yZ1XcS0VIMmDRQXTSV/4wWwK', 'Adam', 'U');
+-- INSERT INTO employee (id,username,user_type,email,salt,hashed_password,name_first,name_last) VALUES (654321 , 'regularUser', '0', 'test@mail.missouri.edu', '2106281797', '$2y$10$18yilYZNmpONY9DKG0ZIh.sqNkRSfW.6Y/siAfVofEfX.cII9qRxu', 'Dude', 'U');
