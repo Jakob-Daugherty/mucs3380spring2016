@@ -1,9 +1,21 @@
 <!DOCTYPE html>
 <?php
 session_start();
+if (!isset($_SERVER['HTTPS']) || !$_SERVER['HTTPS']) { // if request is not secure, redirect to secure url
+    $url = 'https://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
+    header('Location: ' . $url);
+  }
+if(!(isset($_SESSION["username"]) && isset($_SESSION["user_type"]))) {
+    header("Location: index.php");
+}
 ?>
 <html>
 <head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-type" content="text/html" charset="utf-8" />
+
 <!-- Latest compiled and minified CSS -->
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
 
@@ -15,6 +27,8 @@ session_start();
 
 
 <link rel="stylesheet" type="text/css" href="style.css">
+
+<title>CS3380 Final Project</title>
 </head>
 
 
@@ -37,9 +51,9 @@ session_start();
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav">
         <li class="active"><a href="welcome.php">Home<span class="sr-only">(current)</span></a></li>
-        <li><a href="#shoppingcart">Shopping Cart</a></li>
-	 <li><a href="Check">Check in/out</a></li>
-	 <li><a href="#inventory">inventory</a></li>
+        <li><a href="shoppingcart.php">Shopping Cart</a></li>
+	 <li><a href="check.php">Check in/out</a></li>
+	 <li><a href="inventory.php">Inventory</a></li>
 
 
 

@@ -1,6 +1,14 @@
 <!DOCTYPE html>
 <?php
-session_start();
+
+ session_start();
+if (!isset($_SERVER['HTTPS']) || !$_SERVER['HTTPS']) { // if request is not secure, redirect to secure url
+    $url = 'https://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
+    header('Location: ' . $url);
+  }
+if(!(isset($_SESSION["username"]) && isset($_SESSION["user_type"]))) {
+    header("Location: index.php");
+}
 ?>
 <html>
 <head>
@@ -38,13 +46,13 @@ session_start();
       <ul class="nav navbar-nav">
         <li class="active"><a href="index.php">Home<span class="sr-only">(current)</span></a></li>
         <li><a href="#shoppingcart">Shopping Cart</a></li>
-	 <li><a href="Check">Check in/out</a></li>
+	 <li><a href="check.php">Check in/out</a></li>
 	 <li><a href="#inventory">inventory</a></li>
 
 
 
       </ul>
-      <form class="navbar-form navbar-left" action="/mucs3380spring2016/test/index.php" method="POST">
+      <form class="navbar-form navbar-left" action="index.php" method="POST">
         <div class="form-group">
           <input type="text" name="username" class="form-control" placeholder="Username">
         </div>
@@ -71,6 +79,19 @@ session_start();
     </div><!-- /.navbar-collapse -->
   </div><!-- /.container-fluid -->
 </nav>
+<br><br>    
+    <?php
+
+
+	if ($_SESSION['username'] == NULL ) {
+	echo "<div class='content'><h1>ERROR</h1><h4>You must be logged in to view content</h4></div>";
+	}
+	else {
+     echo "<div class='content'><h1>You are successfully logged in and can view this content</h1></div>";   
+    }
+    
+    ?>
+/*    
 <div class="content">
 <h4>Mizzou Checkout</h4>
 <h5>
@@ -79,40 +100,40 @@ This is a test start page for Mizzou Checkout
 
 </div>
 <br><br>
+<div class="content">
+<h4>Error</h4>
+<h5>
+You must be logged in the view content...
+</h5>
+
+</div>
+*/
 <?php
-
-
-	if ($_SESSION['username'] == NULL ) {
-	echo "<div class='content'><h1>ERROR</h1><h4>You must be logged in to view content</h4></div>";
-	}
-	
-        if(isset($_POST['submit'])){ // was the form submitted?
-
+	 if(isset($_POST['submit'])){ // was the form submitted?
           $link = mysqli_connect("localhost", "zmd989", "sc2cba7h", "FinalProject") or die ("connection Error " . mysqli_error($link));
-          $sql = "SELECT salt, hashed_password, id FROM employee WHERE username=?";
+          $sql = "SELECT salt, hashed_password, user_type FROM employee WHERE username=?";
           if($stmt = mysqli_prepare($link, $sql)) {
                                                 $user = $_POST['username'];
                                                 $password = $_POST['password'];
                                                 mysqli_stmt_bind_param($stmt, "s", $user) or die("bind param");
                                                 if(mysqli_stmt_execute($stmt)){
-                                                        mysqli_stmt_bind_result($stmt, $salt ,$hpass, $id);
+                                                        mysqli_stmt_bind_result($stmt, $salt ,$hpass, $uType);
                                                         if(mysqli_stmt_fetch($stmt)){
                                                                 if(password_verify($salt.$password, $hpass)){
                                                                         $_SESSION["username"] = $user;
-                                                                       echo "<script> window.location.assign('welcome.php'); </script>";
+                                                                        $_SESSION["user_type"] = $uType;
+                                                                        echo "<h4>Session started</h4>";
+                                                                        echo "<script> window.location.assign('check.php'); </script>";
                                                                 } else {
-                                                                        echo "<div class='content'><h4>Login failed</h4><br><h4>wrong username or password...</h4></div>";
+                                                                        echo "<h4>Login failed</h4><br>wrong username or password...";
                                                                 }
                                                         }
-
-
                                                 }
         }
 }
-
+	
        ?>
 </body>
 
 
 </html>
-

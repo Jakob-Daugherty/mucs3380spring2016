@@ -1,9 +1,21 @@
 <!DOCTYPE html>
 <?php
 
+	session_start();
+    if (!isset($_SERVER['HTTPS']) || !$_SERVER['HTTPS']) { // if request is not secure, redirect to secure url
+    	$url = 'https://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
+    	header('Location: ' . $url);
+    }
+    if(isset($_SESSION["username"]) && isset($_SESSION["user_type"])) {
+    	if($_SESSION["user_type"] != 1) {
+    		header("Location: index.php");
+    	}
+    } else {
+    	header("Location: index.php");
+    }
 
-$link = mysqli_connect("localhost", "zmd989", "sc2cba7h", "FinalProject") or die ("Connection Error " . mysqli_error($link));
 
+$link = mysqli_connect("localhost", "kcfk28", "gz4kqe8h", "FinalProject") or die ("Connection Error " . mysqli_error($link));
 
 //display non-editable textbox for attribute $key
 function printNonEditable($key) {
@@ -23,7 +35,7 @@ function printInput($key) {
 
 //editable form for records from the city table
 function displayItem() {
-	echo "<form action='edit.php' method='POST' >";
+	echo "<form action='index.php?page=edit' method='POST' >";
 	echo "<input type='hidden' name='table' value='item'>";
 	printNonEditable('id');
 	printInput('name');
@@ -33,7 +45,7 @@ function displayItem() {
 }
 
 function displayItemCategory() {
-	echo "<form action='edit.php' method='POST' >";
+	echo "<form action='index.php?page=edit' method='POST' >";
 	echo "<input type='hidden' name='table' value='item_category'>";
 	printNonEditable('id');
 	printInput('name');
@@ -43,7 +55,7 @@ function displayItemCategory() {
 }
 
 function displayItemCondition() {
-	echo "<form action='edit.php' method='POST' >";
+	echo "<form action='index.php?page=edit' method='POST' >";
 	echo "<input type='hidden' name='table' value='item_condition'>";
 	printNonEditable('id');
 	printInput('name');
@@ -53,7 +65,7 @@ function displayItemCondition() {
 }
 
 function displayEmployee() {
-	echo "<form action='edit.php' method='POST' >";
+	echo "<form action='index.php?page=edit' method='POST' >";
 	echo "<input type='hidden' name='table' value='employee'>";
 	printNonEditable('id');
 	printInput('username');
@@ -66,7 +78,7 @@ function displayEmployee() {
 }
 
 function displayLocation() {
-	echo "<form action='edit.php' method='POST' >";
+	echo "<form action='index.php?page=edit' method='POST' >";
 	echo "<input type='hidden' name='table' value='location'>";
 	printNonEditable('id');
 	printInput('name');
@@ -76,7 +88,7 @@ function displayLocation() {
 }
 
 function displayWaiver() {
-	echo "<form action='edit.php' method='POST' >";
+	echo "<form action='index.php?page=edit' method='POST' >";
 	echo "<input type='hidden' name='table' value='waiver'>";
 	printNonEditable('id');
 	printInput('name');
@@ -126,12 +138,18 @@ function saveEmployee() {
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"><!-- Latest compiled and minified CSS -->
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css"><!-- Optional theme -->
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script><!-- Latest compiled and minified JavaScript -->
+    <link rel="stylesheet" type="text/css" href="style.css">
 	</head>
 	<body>
+    <div class="content" style="width: 100%">
 		<div class="container">
+    		<div class="row">
+    			<div class="col-md-4 col-sm-4 col-xs-3"></div>
+    			<div class="col-md-4 col-sm-4 col-xs-6">
 
       <?php
-
+      echo "<h2>Edit Item</h2>";
+      displayItem();
       	if(isset($_POST['update'])) {//submit came from index.php
       		if(isset($_POST['table'])) {//do we know table information?
       			switch($_POST['table']) {//what table are we updating
@@ -207,7 +225,9 @@ function saveEmployee() {
       	}
 
       ?>
-
+    </div>
+    </div>
+      </div>
     </div>
 	</body>
 </html>

@@ -4,6 +4,15 @@ session_start();
 ?>
 <html>
 <head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-type" content="text/html" charset="utf-8" />
+
+<!-- jQuery library -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
+
+
 <!-- Latest compiled and minified CSS -->
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
 
@@ -15,6 +24,8 @@ session_start();
 
 
 <link rel="stylesheet" type="text/css" href="style.css">
+
+<title>CS3380 Final Project</title>
 </head>
 
 
@@ -37,14 +48,14 @@ session_start();
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav">
         <li class="active"><a href="index.php">Home<span class="sr-only">(current)</span></a></li>
-        <li><a href="#shoppingcart">Shopping Cart</a></li>
-	 <li><a href="Check">Check in/out</a></li>
-	 <li><a href="#inventory">inventory</a></li>
+        <li><a href="shoppingcart.php">Shopping Cart</a></li>
+	 <li><a href="check.php">Check in/out</a></li>
+	 <li><a href="inventory.php">Inventory</a></li>
 
 
 
       </ul>
-      <form class="navbar-form navbar-left" action="/mucs3380spring2016/test/index.php" method="POST">
+      <form class="navbar-form navbar-left" action="index.php" method="POST">
         <div class="form-group">
           <input type="text" name="username" class="form-control" placeholder="Username">
         </div>
@@ -56,7 +67,7 @@ session_start();
 	
 
       </form>
-     <ul class="nav navbar-nav navbar-right">
+<!--      <ul class="nav navbar-nav navbar-right">
                 <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Location<span class="caret"></span></a>
           <ul class="dropdown-menu">
@@ -65,7 +76,7 @@ session_start();
             <li><a href="#">Information Desk</a></li>
           </ul>
         </li>
-      </ul> 
+      </ul>  -->
 
       </ul>
     </div><!-- /.navbar-collapse -->
@@ -79,29 +90,33 @@ This is a test start page for Mizzou Checkout
 
 </div>
 <br><br>
+<div class="content">
+<!-- //<h4>Error</h4> -->
+<h5>
+You must be logged in the view content...
+</h5>
+
+</div>
+<div class="alertbox content">
 <?php
+   if(isset($_POST['submit'])){ // was the form submitted?
 
-
-	if ($_SESSION['username'] == NULL ) {
-	echo "<div class='content'><h1>ERROR</h1><h4>You must be logged in to view content</h4></div>";
-	}
-	
-        if(isset($_POST['submit'])){ // was the form submitted?
-
-          $link = mysqli_connect("localhost", "zmd989", "sc2cba7h", "FinalProject") or die ("connection Error " . mysqli_error($link));
-          $sql = "SELECT salt, hashed_password, id FROM employee WHERE username=?";
+          $link = mysqli_connect("localhost", "annhx3", "mc5g2dhd", "FinalProject") or die ("connection Error " . mysqli_error($link));
+          $sql = "SELECT salt, hashed_password, user_type FROM employee WHERE username=?";
           if($stmt = mysqli_prepare($link, $sql)) {
-                                                $user = $_POST['username'];
-                                                $password = $_POST['password'];
+                                                $user = htmlspecialchars((string)$_POST['username']);
+                                                $password = htmlspecialchars((string)$_POST['password']);
                                                 mysqli_stmt_bind_param($stmt, "s", $user) or die("bind param");
                                                 if(mysqli_stmt_execute($stmt)){
-                                                        mysqli_stmt_bind_result($stmt, $salt ,$hpass, $id);
+                                                        mysqli_stmt_bind_result($stmt, $salt ,$hpass, $uType);
                                                         if(mysqli_stmt_fetch($stmt)){
                                                                 if(password_verify($salt.$password, $hpass)){
                                                                         $_SESSION["username"] = $user;
-                                                                       echo "<script> window.location.assign('welcome.php'); </script>";
+                                                                        $_SESSION["user_type"] = $uType;
+                                                                       // echo "<h4>Session started</h4>";
+                                                                        echo "<script> window.location.assign('welcome.php'); </script>";
                                                                 } else {
-                                                                        echo "<div class='content'><h4>Login failed</h4><br><h4>wrong username or password...</h4></div>";
+                                                                        echo "<div class='alert alert-danger'>Login failed<br>Wrong username or password.<br>Please try again.</div>";
                                                                 }
                                                         }
 
@@ -109,8 +124,12 @@ This is a test start page for Mizzou Checkout
                                                 }
         }
 }
+  
+
 
        ?>
+       </div>
+
 </body>
 
 

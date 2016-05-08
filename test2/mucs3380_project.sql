@@ -1,6 +1,14 @@
--- Edited by Jakob D 5/03/2016
-
-
+DROP TABLE IF EXISTS `student_item_transaction`;
+DROP TABLE IF EXISTS `item_category`;
+DROP TABLE IF EXISTS `item_condition_update`;
+DROP TABLE IF EXISTS `item_condition`;
+DROP TABLE IF EXISTS `expired_waiver`;
+DROP TABLE IF EXISTS `employee_permissions`;
+DROP TABLE IF EXISTS `location`;
+DROP TABLE IF EXISTS `item`;
+DROP TABLE IF EXISTS `waiver`;
+DROP TABLE IF EXISTS `student`;
+DROP TABLE IF EXISTS `employee`;
 
 -- student TABLE
 DROP TABLE IF EXISTS `student`;
@@ -10,17 +18,6 @@ CREATE TABLE `student` (
     `email` VARCHAR(255) NOT NULL,
     `name_first` VARCHAR(30) DEFAULT NULL,
     `name_last` VARCHAR(45) NOT NULL,
-    PRIMARY KEY(`id`)
-) ENGINE = INNODB;
-
-
--- 
--- employee_permissions TABLE
--- 
-DROP TABLE IF EXISTS `employee_permissions`;
-CREATE TABLE `employee_permissions` (
-    `id` INTEGER NOT NULL,
-    `name` VARCHAR(250) NOT NULL,
     PRIMARY KEY(`id`)
 ) ENGINE = INNODB;
 
@@ -38,6 +35,17 @@ CREATE TABLE `employee` (
     `name_first` VARCHAR(30) DEFAULT NULL,
     `name_last` VARCHAR(45) NOT NULL,
     FOREIGN KEY (`user_type`) REFERENCES `employee_permissions`(`id`) ON DELETE CASCADE,
+    PRIMARY KEY(`id`)
+) ENGINE = INNODB;
+
+-- 
+-- employee_permissions TABLE
+-- 
+DROP TABLE IF EXISTS `employee_permissions`;
+CREATE TABLE `employee_permissions` (
+    `id` INTEGER NOT NULL,
+    `name` VARCHAR(250) NOT NULL,
+    FOREIGN KEY (`id`) REFERENCES `employee`(`user_type`) ON DELETE CASCADE,
     PRIMARY KEY(`id`)
 ) ENGINE = INNODB;
 
@@ -77,16 +85,6 @@ CREATE TABLE `expired_waiver` (
 ) ENGINE = INNODB;
 
 -- 
--- item_condition TABLE
--- 
-DROP TABLE IF EXISTS `item_condition`;
-CREATE TABLE `item_condition` (
-    `id` INTEGER NOT NULL,
-    `name` VARCHAR(250) NOT NULL,
-    PRIMARY KEY(`id`)
-) ENGINE = INNODB;
-
--- 
 -- item TABLE
 -- 
 DROP TABLE IF EXISTS `item`;
@@ -101,7 +99,15 @@ CREATE TABLE `item` (
     PRIMARY KEY(`id`)
 ) ENGINE = INNODB;
 
-
+-- 
+-- item_condition TABLE
+-- 
+DROP TABLE IF EXISTS `item_condition`;
+CREATE TABLE `item_condition` (
+    `id` INTEGER NOT NULL,
+    `name` VARCHAR(250) NOT NULL,
+    PRIMARY KEY(`id`)
+) ENGINE = INNODB;
 
 -- 
 -- item_category TABLE
@@ -136,21 +142,20 @@ CREATE TABLE `item_condition_update` (
 -- 
 DROP TABLE IF EXISTS `student_item_transaction`;
 CREATE TABLE `student_item_transaction` (
-	`transaction_id` INTEGER NOT NULL AUTO_INCREMENT,
     `student_id` INTEGER NOT NULL,
     `item_id` INTEGER NOT NULL,
     `employee_id` INTEGER NOT NULL,
     `location_id` INTEGER NOT NULL,
     `item_condition_id` INTEGER NOT NULL,
     `transaction_type` VARCHAR(50) DEFAULT NULL, -- Made it hold STRINGS rather than INTEGERS and making another table
-    `transaction_datetime` DATETIME, 
+    `transaction_datetime` DATETIME,
     FOREIGN KEY (`student_id`) REFERENCES `student`(`id`) ON DELETE CASCADE,
     FOREIGN KEY (`item_id`) REFERENCES `item`(`id`) ON DELETE CASCADE,
     FOREIGN KEY (`employee_id`) REFERENCES `employee`(`id`) ON DELETE CASCADE,
     FOREIGN KEY (`location_id`) REFERENCES `location`(`id`) ON DELETE CASCADE,
     FOREIGN KEY (`item_condition_id`) REFERENCES `item_condition`(`id`) ON DELETE CASCADE,
-    PRIMARY KEY(`transaction_id`)
+    PRIMARY KEY(`student_id`, `item_id`, `employee_id`)
 ) ENGINE = INNODB;
 
--- INSERT INTO employee (id,username,user_type,email,salt,hashed_password,name_first,name_last) VALUES (123456 , 'adminUser', '1', 'testemail@mail.missouri.edu', '1419814819', '$2y$10$3FleH8rp.AcSuPg4BDAm7epLg3sw6yZ1XcS0VIMmDRQXTSV/4wWwK', 'Adam', 'U');
--- INSERT INTO employee (id,username,user_type,email,salt,hashed_password,name_first,name_last) VALUES (654321 , 'regularUser', '0', 'test@mail.missouri.edu', '2106281797', '$2y$10$18yilYZNmpONY9DKG0ZIh.sqNkRSfW.6Y/siAfVofEfX.cII9qRxu', 'Dude', 'U');
+ INSERT INTO employee (id,username,user_type,email,salt,hashed_password,name_first,name_last) VALUES (123456 , 'adminUser', '1', 'testemail@mail.missouri.edu', '1419814819', '$2y$10$3FleH8rp.AcSuPg4BDAm7epLg3sw6yZ1XcS0VIMmDRQXTSV/4wWwK', 'Adam', 'U');
+ INSERT INTO employee (id,username,user_type,email,salt,hashed_password,name_first,name_last) VALUES (654321 , 'regularUser', '0', 'test@mail.missouri.edu', '2106281797', '$2y$10$18yilYZNmpONY9DKG0ZIh.sqNkRSfW.6Y/siAfVofEfX.cII9qRxu', 'Dude', 'U');
