@@ -102,22 +102,42 @@ if ($_SESSION['username'] == NULL ) {
 	echo "<div class='content'><h1>ERROR</h1><h4>You must be logged in to view content</h4></div>";
 }
 else {
-	echo "<div class='content'><h1>Welcome " . $_SESSION['username']. "<h1><h4>This is where items will populate</h4>";	
+	echo "<div class='content'><h1>Welcome " . $_SESSION['username']. "<h1><h4>Here are the current items.</h4>";	
  	$link = mysqli_connect('localhost', 'zmd989', 'sc2cba7h');
 	mysqli_select_db($link, 'FinalProject');
-	$sql = "SELECT * FROM item"; 
+    //(SELECT ic.name FROM item_condition AS ic, item AS i WHERE ic.id = i.id)
+	$sql = "SELECT id AS `Item ID`, name AS `Item Name`, available AS `Availability`, item_condition_id AS `Item Condition`, location_id AS `Location` FROM item"; 
 	if ($stmt = mysqli_prepare($link, $sql)) {
-	//mysqli_stmt_bind_param($stmt, "s", $userinput);
-	mysqli_stmt_execute($stmt);
-	$result = mysqli_stmt_get_result($stmt);
+	   //mysqli_stmt_bind_param($stmt, "s", $userinput);
+	   mysqli_stmt_execute($stmt);
+	   $result = mysqli_stmt_get_result($stmt);
 	}
-	echo "<div class='content'><th>id</th><th>name</th><th>available</th><th>item condition</th><th>location</th>";
-	while ($row = mysqli_fetch_assoc($result)) {
+    echo "<table class='table table-hover'><thead><tr>";
 
-		echo "<td>" . $_row['id']."</td>";	
-	}
+    //Creating the Column Headers
+    $fields = mysqli_fetch_fields($result);
+    //echo "<th></th><th></th>";
+    foreach ($fields as $field) {
+        echo "<th>".$field->name."</th>";
+    }
 
-	echo "<tr>";
+    echo "</tr></thead>";
+	echo "<tbody>";
+
+    //Going through the data in each row of the query return
+    while ($row = mysqli_fetch_row($result)) {
+        echo "<tr>";
+            for ($i = 0; $i < mysqli_num_fields($result); $i++) { //iterate for each column
+                echo "<td><input type='hidden' name='".mysqli_fetch_field_direct($result, $i)->name."' value='".$row[$i]."'>".$row[$i]."</td>";
+            }
+        echo "</tr></form>";
+        echo "<form action='edit.php' method='POST'>";
+        echo "<input type='hidden' name='table' value=".$table.">";
+    }
+
+    echo "</tbody></table>";
+
+    mysqli_free_result($result); // free result set
 
 }
 ?>

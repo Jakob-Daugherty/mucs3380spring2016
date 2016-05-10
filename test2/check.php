@@ -23,6 +23,9 @@ if(!(isset($_SESSION["username"]) && isset($_SESSION["user_type"]))) {
 
 
 <link rel="stylesheet" type="text/css" href="style.css">
+    
+   
+    
 </head>
 
 
@@ -45,9 +48,9 @@ if(!(isset($_SESSION["username"]) && isset($_SESSION["user_type"]))) {
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav">
         <li class="active"><a href="index.php">Home<span class="sr-only">(current)</span></a></li>
-        <li><a href="#shoppingcart">Shopping Cart</a></li>
+        <li><a href="shoppingcart.php">Shopping Cart</a></li>
 	 <li><a href="check.php">Check in/out</a></li>
-	 <li><a href="#inventory">inventory</a></li>
+	 <li><a href="inventory.php">inventory</a></li>
 
 
 
@@ -84,31 +87,37 @@ if(!(isset($_SESSION["username"]) && isset($_SESSION["user_type"]))) {
 
 
 	if ($_SESSION['username'] == NULL ) {
-	echo "<div class='content'><h1>ERROR</h1><h4>You must be logged in to view content</h4></div>";
+	echo "<div class='content'><h1>ERROR</h1><h4>You must be logged in to use this feature.</h4></div>";
 	}
 	else {
-     echo "<div class='content'><h1>You are successfully logged in and can view this content</h1></div>";   
+     echo "<div class='content'><h1>Welcome " .$_SESSION['username']. ".</h1></div>";   
     }
     
     ?>
-/*    
+    
+    <br><br>
 <div class="content">
-<h4>Mizzou Checkout</h4>
+<h3>Check In or Check Out an Item</h3>
 <h5>
-This is a test start page for Mizzou Checkout
+    <form action="check.php" method="POST">
+    <h2>Enter Item ID: </h2><br>
+    <input type='text' name='ItemID' class='form-control' placeholder='Item ID'>
+    <br><br>
+    <h2>Enter Student ID:</h2>
+    <input type='text' name='StudentID' class='form-control' placeholder='Student ID'>
+    <br>
+    <h2>
+    <input type='button' id='button' name='checkIn' class='btn btn-default' value="Check In">
+    <input type='button' id='button' name='checkOut' class='btn btn-default' value="Check Out">
+    </h2>
+        <br><br>
+    </form>
 </h5>
 
 </div>
 <br><br>
-<div class="content">
-<h4>Error</h4>
-<h5>
-You must be logged in the view content...
-</h5>
-
-</div>
-*/
 <?php
+    /*
 	 if(isset($_POST['submit'])){ // was the form submitted?
           $link = mysqli_connect("localhost", "zmd989", "sc2cba7h", "FinalProject") or die ("connection Error " . mysqli_error($link));
           $sql = "SELECT salt, hashed_password, user_type FROM employee WHERE username=?";
@@ -131,7 +140,19 @@ You must be logged in the view content...
                                                 }
         }
 }
-	
+	*/
+    if(isset($_POST['checkIn'])){
+        $link = mysqli_connect("localhost", "zmd989", "sc2cba7h", "FinalProject") or die ("connection Error " . mysqli_error($link));
+        echo "<h4>Check In</h4>";
+        
+        
+    }
+    
+    if(isset($_POST['checkOut'])){
+        $link = mysqli_connect("localhost", "zmd989", "sc2cba7h", "FinalProject") or die ("connection Error " . mysqli_error($link));
+        echo "<h4>Check out</h4>";
+    }
+    
        ?>
 </body>
 
