@@ -91,30 +91,44 @@ if(!(isset($_SESSION["username"]) && isset($_SESSION["user_type"]))) {
 	else {
 	echo "<div class='content'><h1>Shopping Cart Search</h1><form action='/mucs3380spring2016/test2/shoppingcart.php' method='POST'>
         <div class='form-group'>
-          <input type='text' name='search' class='form-control' placeholder='Search a students cart'>
+          <input type='text' name='search' class='form-control' placeholder='Search for a student'>
+	<label class='radio-inline'><input type='radio' name='radio' value=1 checked>Student ID</label>
+	<label class='radio-inline'><input type='radio' name='radio' value=2>Pawprint</label>
+	<label class='radio-inline'><input type='radio' name='radio' value=3>Last Name</label><br>
 	 <button type='submit' name='submit' class='btn btn-default'>Search</button>
         </form></div>";	
 
 	 if(isset($_POST['submit'])){ // was the form submitted?
-	        $link = mysqli_connect('localhost', 'zmd989', 'sc2cba7h');
-        mysqli_select_db($link, 'FinalProject');
-	$sql = "SELECT * FROM student WHERE username = ?";
-	if ($stmt = mysqli_prepare($link, $sql)){
-	mysqli_stmt_execute($stmt);
-	$result = mysqli_stmt_get_result($stmt);
-	}
-	echo "<table class='table table-hover'><th>id</th><th>username</th><th>email</th><th>first name</th><th>last name</th>";
-	while ($row = mysqli_fetch_row($result)) {
-		echo "<tr>";
-		echo "<td>" . $row['id'] . "</td><td>" . $row['username'] . "</td><td>" . $row['email'] . "</td><td>" . $row['name_first'] . "</td><td>" . $row['name_last'] . "</td>";
-		echo "</tr>";
-		}	
+		$link = mysqli_connect('localhost', 'zmd989', 'sc2cba7h');
+       		 mysqli_select_db($link, 'FinalProject');	
+  			switch ($_POST['radio']){
+			case 1:
+			 $sql = "SELECT student.name_first, student.name_last, student.username, student.email, item.name FROM student inner join item on student.id = item.id where student.id = ?";
+			break;
+			case 2:
+	 		$sql = "SELECT student.name_first, student.name_last, student.username, student.email, item.name FROM student inner join item on student.id = item.id where student.username = ?";
+			break;
+			case 3:
+			 $sql = "SELECT student.name_first, student.name_last, student.username, student.email, item.name FROM student inner join item on student.id = item.id where student.name_last = ?";
+			break;
+				}
+		$userinput = $_POST['search'];
+		 if ($stmt = mysqli_prepare($link, $sql)) {
+         		mysqli_stmt_bind_param($stmt, "s", $userinput);
+           		mysqli_stmt_execute($stmt);
+           		$result = mysqli_stmt_get_result($stmt);
+        		}
+	echo "<table class='table'><thead><tr>";
+	echo "<td>First Name</td><td>Last Name</td><td>Pawprint</td><td>Email</td><td>Items Checkout Out</td></tr>";
+		while ($row=mysqli_fetch_row($result))
+   			 {
+    				echo "<td>".$row[0]."</td><td>".$row[1]."</td><td>".$row[2]."</td><td>".$row[3]."</td><td>".$row[4]."</tr>";
+    				}
 	echo "</table>";
+			}
 	}
-
-	}
-
-      ?>
+						
+   	      ?>
 </body>
 
 

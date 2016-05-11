@@ -106,19 +106,21 @@ else {
  	$link = mysqli_connect('localhost', 'zmd989', 'sc2cba7h');
 	mysqli_select_db($link, 'FinalProject');
     //(SELECT ic.name FROM item_condition AS ic, item AS i WHERE ic.id = i.id)
-	$sql = "SELECT id AS `Item ID`, name AS `Item Name`, available AS `Availability`, item_condition_id AS `Item Condition`, location_id AS `Location` FROM item"; 
+    //SELECT ic.name FROM item_condition AS ic INNER JOIN item AS i ON ic.id = i.item_condition_id;
+	$sql = "SELECT i.id AS `Item ID`, i.name AS `Item Name`, available AS `Availability`, ic.name AS `Item Condition`, l.name AS `Location` FROM item AS i, item_condition AS ic, location AS l WHERE i.item_condition_id = ic.id AND i.location_id = l.id AND i.available = '1' ORDER BY i.id"; 
+    //SELECT i.id AS `Item ID`, i.name AS `Item Name`, available AS `Availability`, ic.name AS `Item Condition`, location_id AS `Location` FROM item AS i, item_condition AS ic WHERE i.item_condition_id = ic.id ORDER BY i.id;
 	if ($stmt = mysqli_prepare($link, $sql)) {
 	   //mysqli_stmt_bind_param($stmt, "s", $userinput);
 	   mysqli_stmt_execute($stmt);
 	   $result = mysqli_stmt_get_result($stmt);
 	}
-    echo "<table class='table table-hover'><thead><tr>";
+    echo "<table class='table table-hover' style='color:black; background-color:white;'><thead><tr>";
 
     //Creating the Column Headers
     $fields = mysqli_fetch_fields($result);
     //echo "<th></th><th></th>";
     foreach ($fields as $field) {
-        echo "<th>".$field->name."</th>";
+        echo "<th style='text-align:center;'>".$field->name."</th>";
     }
 
     echo "</tr></thead>";
@@ -136,7 +138,14 @@ else {
     }
 
     echo "</tbody></table>";
-
+    
+    /*Two tables:
+        Checked out
+            everything in item plus student who checked it out and transaction time
+            plus color code based on overdue or not
+        Available 
+            info in item table sorted by location
+    */
     mysqli_free_result($result); // free result set
 
 }
