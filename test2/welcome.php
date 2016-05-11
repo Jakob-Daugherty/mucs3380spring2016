@@ -77,9 +77,24 @@ session_start();
             <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Location
               <span class="caret"></span></button>
               <ul class="dropdown-menu">
-                <li><a href="#MSU">Memorial Student Union</a></li>
-                <li><a href="#SC">Student Center</a></li>
-                <li><a href="#ALL">All</a></li>
+                <li>
+                    <form action='<?=$_SERVER['PHP_SELF']?>' method='POST'>
+                        <input type='hidden' name='location' value="MSU">
+                        <input type="submit" name="Memorial Student Union" value="Memorial Student Union"/>
+                    </form>
+                </li>
+                <li>
+                    <form action='<?=$_SERVER['PHP_SELF']?>' method='POST'>
+                        <input type='hidden' name='location' value="SC">
+                        <input type="submit" name="Student Center" value="Student Center"/>
+                    </form>
+                </li>
+                <li>
+                    <form action='<?=$_SERVER['PHP_SELF']?>' method='POST'>
+                        <input type='hidden' name='location' value="All">
+                        <input type="submit" name="All" value="All"/>
+                    </form>
+                </li>
               </ul>
           </div>
           </li>
@@ -102,14 +117,36 @@ if ($_SESSION['username'] == NULL ) {
 	echo "<div class='content'><h1>ERROR</h1><h4>You must be logged in to view content</h4></div>";
 }
 else {
-	echo "<div class='content'><h1>Welcome " . $_SESSION['username']. "<h1><h4>Here are the current items.</h4>";	
+	echo "<div class='content'><h1>Welcome " . $_SESSION['username']. "<h1><h4>Here are the current items.".$_POST['location']."</h4>";	
  	$link = mysqli_connect('localhost', 'zmd989', 'sc2cba7h');
 	mysqli_select_db($link, 'FinalProject');
     //(SELECT ic.name FROM item_condition AS ic, item AS i WHERE ic.id = i.id)
     //SELECT ic.name FROM item_condition AS ic INNER JOIN item AS i ON ic.id = i.item_condition_id;
-	$sql = "SELECT i.id AS `Item ID`, i.name AS `Item Name`, available AS `Availability`, ic.name AS `Item Condition`, l.name AS `Location` FROM item AS i, item_condition AS ic, location AS l WHERE i.item_condition_id = ic.id AND i.location_id = l.id AND i.available = '1' ORDER BY i.id"; 
+	//$sql = "SELECT i.id AS `Item ID`, i.name AS `Item Name`, available AS `Availability`, ic.name AS `Item Condition`, l.name AS `Location` FROM item AS i, item_condition AS ic, location AS l WHERE i.item_condition_id = ic.id AND i.location_id = l.id AND i.available = '1' ORDER BY i.id"; 
     //SELECT i.id AS `Item ID`, i.name AS `Item Name`, available AS `Availability`, ic.name AS `Item Condition`, location_id AS `Location` FROM item AS i, item_condition AS ic WHERE i.item_condition_id = ic.id ORDER BY i.id;
-	if ($stmt = mysqli_prepare($link, $sql)) {
+	$sql = "
+        SELECT 
+            i.id AS `Item ID`, 
+            i.name AS `Item Name`,
+            (SELECT sit.student_id FROM student_item_transaction AS sit WHERE sit.item_id = i.id AND sit.transaction_datetime >= CURDATE() AND sit.transaction_type = 'Out' AND sit.checkout_window = 
+                (SELECT MAX(sit.checkout_window) FROM student_item_transaction WHERE item_id = sit.item_id)) AS `Student`,
+            (SELECT sit.employee_id FROM student_item_transaction AS sit WHERE sit.item_id = i.id AND sit.transaction_datetime >= CURDATE() AND sit.transaction_type = 'Out' AND sit.checkout_window = 
+                (SELECT MAX(sit.checkout_window) FROM student_item_transaction WHERE item_id = sit.item_id)) AS `Employee`,
+            available AS `Availability`, 
+            ic.name AS `Item Condition`, 
+            l.name AS `Location`,
+            (SELECT sit.checkout_window FROM student_item_transaction AS sit WHERE sit.item_id = i.id AND sit.transaction_datetime >= CURDATE() AND sit.transaction_type = 'Out' AND sit.checkout_window = 
+                (SELECT MAX(sit.checkout_window) FROM student_item_transaction WHERE item_id = sit.item_id)) AS `Time Due Back`
+        FROM 
+            item AS i, 
+            item_condition AS ic, 
+            location AS l 
+        WHERE 
+            i.item_condition_id = ic.id AND 
+            i.location_id = l.id 
+        ORDER BY i.id
+    ";
+    if ($stmt = mysqli_prepare($link, $sql)) {
 	   //mysqli_stmt_bind_param($stmt, "s", $userinput);
 	   mysqli_stmt_execute($stmt);
 	   $result = mysqli_stmt_get_result($stmt);
@@ -128,13 +165,19 @@ else {
 
     //Going through the data in each row of the query return
     while ($row = mysqli_fetch_row($result)) {
-        echo "<tr>";
+        if (mysqli_fetch_field_direct($result, 4)->name == "Availability" && $row[4] == 1) { //Available Items are green
+            echo "<tr style='background-color:#00FF66;'>";
+        } else if (mysqli_fetch_field_direct($result, 4)->name == "Availability" && $row[4] == 0 && strtotime($row[7]) >= time()) { //Checked-Out Items that aren't overdue are yellow
+            echo "<tr style='background-color:#FFFF00;'>";
+        } else if (mysqli_fetch_field_direct($result, 4)->name == "Availability" && $row[4] == 0 && strtotime($row[7]) <= time()) { //Overdue Items are red
+            echo "<tr style='background-color:#FF3333;'>";
+        } else {
+            echo "<tr>";
+        }
             for ($i = 0; $i < mysqli_num_fields($result); $i++) { //iterate for each column
                 echo "<td><input type='hidden' name='".mysqli_fetch_field_direct($result, $i)->name."' value='".$row[$i]."'>".$row[$i]."</td>";
             }
-        echo "</tr></form>";
-        echo "<form action='edit.php' method='POST'>";
-        echo "<input type='hidden' name='table' value=".$table.">";
+        echo "</tr>";
     }
 
     echo "</tbody></table>";
@@ -155,9 +198,3 @@ else {
 
 </html>
 
-<!--The MIT License (MIT)
-Copyright (c) 2016 Hunter Ginther, Jakob Daugherty, Zach Dolan, Kevin Free, Michael McLaughlin, and Alyssa Nielsen 
-
-Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.-->
