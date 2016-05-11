@@ -4,12 +4,8 @@
     $url = 'https://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
     header('Location: ' . $url);
   }
-  if(isset($_SESSION["username"]) && isset($_SESSION["user_type"])) {
-    if($_SESSION["user_type"] != 1) {
+  if(!isset($_SESSION["username"]) && !isset($_SESSION["user_type"])) {
       header("Location: index.php");
-    }
-  } else {
-    header("Location: index.php");
   }
 ?>
     <html>
@@ -41,34 +37,55 @@
           $link = mysqli_connect("localhost", "kcfk28", "gz4kqe8h", "FinalProject") or die ("Connection Error " . mysqli_error($link));
 
           if(!isset($_POST['submit']) || $_POST['radios']==0) {
-            $sql = "SELECT * FROM item ORDER BY id";
+            $sql = "SELECT i.id AS `Item ID`, i.name AS `Item Name`, available AS `Availability`, ic.name AS `Item Condition`, l.name AS `Location` FROM item AS i, item_condition AS ic, location AS l WHERE i.item_condition_id = ic.id AND i.location_id = l.id ORDER BY i.id";
           	if ($stmt = mysqli_prepare($link, $sql)) {
             	mysqli_stmt_execute($stmt) or die("execute");
             	$result = mysqli_stmt_get_result($stmt);
             }
+          } else {
+
+						switch($_POST['radios']) {
+							case '1': $sql = "SELECT i.id AS `Item ID`, i.name AS `Item Name`, available AS `Availability`, ic.name AS `Item Condition`, l.name AS `Location` FROM item AS i, item_condition AS ic, location AS l WHERE i.item_condition_id = ic.id AND i.location_id = l.id AND i.item_condition_id > 2 ORDER BY i.id"; break;
+							case '2': $sql = "SELECT i.id AS `Item ID`, i.name AS `Item Name`, available AS `Availability`, ic.name AS `Item Condition`, l.name AS `Location` FROM item AS i, item_condition AS ic, location AS l WHERE i.item_condition_id = ic.id AND i.location_id = l.id AND i.available = 0 ORDER BY i.id"; break;
+							case '3': $sql = "SELECT i.id AS `Item ID`, i.name AS `Item Name`, available AS `Availability`, ic.name AS `Item Condition`, l.name AS `Location` FROM item AS i, item_condition AS ic, location AS l WHERE i.item_condition_id = ic.id AND i.location_id = l.id AND i.available = 1 ORDER BY i.id"; break;
+							case '4':	$sql = "SELECT i.id AS `Item ID`, i.name AS `Item Name`, available AS `Availability`, ic.name AS `Item Condition`, l.name AS `Location` FROM item AS i, item_condition AS ic, location AS l WHERE i.item_condition_id = ic.id AND i.location_id = l.id ORDER BY i.id"; break;
+							case '5': $sql = "SELECT i.id AS `Item ID`, i.name AS `Item Name`, available AS `Availability`, ic.name AS `Item Condition`, l.name AS `Location` FROM item AS i, item_condition AS ic, location AS l WHERE i.item_condition_id = ic.id AND i.location_id = l.id ORDER BY i.id"; break;
+							case '6'; $sql = "SELECT i.id AS `Item ID`, i.name AS `Item Name`, available AS `Availability`, ic.name AS `Item Condition`, l.name AS `Location` FROM item AS i, item_condition AS ic, location AS l WHERE i.item_condition_id = ic.id AND i.location_id = l.id ORDER BY i.id"; break;
+						}
+
+						if ($stmt = mysqli_prepare($link, $sql)) {
+            	mysqli_stmt_execute($stmt) or die("execute");
+            	$result = mysqli_stmt_get_result($stmt);
+						}
+
           }
 
-          echo "<table class='table table-hover'><thead>\n\n";
+					if( mysqli_num_rows($result) == 0) {
+						echo "<h4>There are no items that fit this search</hr>";
+					} else {
 
-          // Creating the heading row
-          $row = mysqli_fetch_assoc($result);
-          echo "<tr><th></th><th></th>";
-          foreach ($row as $column_value => $row_value) {
-              echo "<th>$column_value</th>";
-          }
+	          echo "<table class='table table-hover'><thead>\n\n";
 
-          echo "</tr></thead><tbody>\n\n";
+	          // Creating the heading row
+	          $row = mysqli_fetch_assoc($result);
+	          echo "<tr><th></th>";
+	          foreach ($row as $column_value => $row_value) {
+	              echo "<th>$column_value</th>";
+	          }
 
-          // Creating the body of the table
-          do {
-              echo '<form action="edit.php" method="POST"><input type="hidden" name="table" value="' . $which_table . '"><tr><td><input class="btn btn-info" type="submit" name="update" value="Update"></td><td><input class="btn btn-danger" type="submit" name="delete" value="Delete"></td>';
-              foreach ($row as $column_value => $row_value) {
-                  echo '<td><input type="hidden" name="'.$column_value.'" value="'.$row_value.'">'. $row_value .'</td>';
-              }
-              echo "</tr></form>\n";
-          } while ($row = mysqli_fetch_assoc($result));
+	          echo "</tr></thead><tbody>\n\n";
 
-          echo "</tbody></table>";
+	          // Creating the body of the table
+	          do {
+	              echo '<form action="edit.php" method="POST"><tr><td><input class="btn btn-info" type="submit" name="update" value="Update"></td>';
+	              foreach ($row as $column_value => $row_value) {
+	                  echo '<td><input type="hidden" name="'.$column_value.'" value="'.$row_value.'">'. $row_value .'</td>';
+	              }
+	              echo "</tr></form>\n";
+	          } while ($row = mysqli_fetch_assoc($result));
+
+	          echo "</tbody></table>";
+					}
 
           mysqli_free_result($result);
 
@@ -78,10 +95,9 @@
       </body>
     </html>
 
+		<!--The MIT License (MIT)
+		Copyright (c) 2016 Hunter Ginther, Jakob Daugherty, Zach Dolan, Kevin Free, Michael McLaughlin, and Alyssa Nielsen
 
-<!--The MIT License (MIT)
-Copyright (c) 2016 Hunter Ginther, Jakob Daugherty, Zach Dolan, Kevin Free, Michael McLaughlin, and Alyssa Nielsen 
+		Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
-Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.-->
+		THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.-->
