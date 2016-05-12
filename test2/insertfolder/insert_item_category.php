@@ -36,6 +36,7 @@
             printf("Connect failed: %s\n", mysqli_connect_error());
             exit();
           }
+      //sql(5.0)
       $sql = "INSERT INTO item_category (id, name, waiver, item_id) VALUES (?, ?, ?, ?)";
       if ($stmt = mysqli_prepare($link, $sql)) {
         $id = $_POST['id'];

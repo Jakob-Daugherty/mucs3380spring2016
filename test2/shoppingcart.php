@@ -26,7 +26,7 @@ if(!(isset($_SESSION["username"]) && isset($_SESSION["user_type"]))) {
     echo "<div class='content'><h1>Shopping Cart Search</h1><form action='/mucs3380spring2016/test2/shoppingcart.php' method='POST'>
     <div class='form-group'>
       <input type='text' name='search' class='form-control' placeholder='Search for a student'>
-      <label class='radio-inline'><input type='radio' name='radio' value=1 checked>Student ID</label>
+      <label class='radio-inline'><input type='radio' name='radio' value=1 checked>ID</label>
       <label class='radio-inline'><input type='radio' name='radio' value=2>Pawprint</label>
       <label class='radio-inline'><input type='radio' name='radio' value=3>Last Name</label><br>
       <button type='submit' name='submit' class='btn btn-default'>Search</button>
@@ -41,12 +41,15 @@ if(!(isset($_SESSION["username"]) && isset($_SESSION["user_type"]))) {
   }
   switch ($_POST['radio']){ //test which radio is checked
     case 1:
+    //sql(2)
     $sql = "SELECT student.name_first, student.name_last, student.username, student.email, item.name FROM student inner join item on student.id = item.id where student.id = ?";
     break;
     case 2:
+    //sql(2.1)
     $sql = "SELECT student.name_first, student.name_last, student.username, student.email, item.name FROM student inner join item on student.id = item.id where student.username = ?";
     break;
     case 3:
+    //sql(2.2)
     $sql = "SELECT student.name_first, student.name_last, student.username, student.email, item.name FROM student inner join item on student.id = item.id where student.name_last = ?";
     break;
   }
@@ -56,7 +59,7 @@ if(!(isset($_SESSION["username"]) && isset($_SESSION["user_type"]))) {
     mysqli_stmt_execute($stmt);
     $result = mysqli_stmt_get_result($stmt);
   } //reparing, binding, executing and gettin the results of the query
-  echo "<table class='table'><thead><tr>";
+  echo "<table class='table shoppingcart'><thead><tr>";
   echo "<td>First Name</td><td>Last Name</td><td>Pawprint</td><td>Email</td><td>Items Checked Out</td></tr>"; //creating table headers
   while ($row=mysqli_fetch_row($result)) //fetch the values of each row
   {

@@ -38,6 +38,7 @@
           $link = mysqli_connect("localhost", "kcfk28", "gz4kqe8h", "FinalProject") or die ("Connection Error " . mysqli_error($link));
 
           if(!isset($_POST['submit']) || $_POST['radios']==0) {
+	        //sql(4.0)
             $sql = "SELECT i.id AS `Item ID`, i.name AS `Item Name`, available AS `Availability`, ic.name AS `Item Condition`, l.name AS `Location` FROM item AS i, item_condition AS ic, location AS l WHERE i.item_condition_id = ic.id AND i.location_id = l.id ORDER BY i.id";
           	if ($stmt = mysqli_prepare($link, $sql)) {
             	mysqli_stmt_execute($stmt) or die("execute");
@@ -46,11 +47,17 @@
           } else {
 
 						switch($_POST['radios']) {
+							//sql(4.1)
 							case '1': $sql = "SELECT i.id AS `Item ID`, i.name AS `Item Name`, available AS `Availability`, ic.name AS `Item Condition`, l.name AS `Location` FROM item AS i, item_condition AS ic, location AS l WHERE i.item_condition_id = ic.id AND i.location_id = l.id AND i.item_condition_id > 2 ORDER BY i.id"; break;
+							//sql(4.2)
 							case '2': $sql = "SELECT i.id AS `Item ID`, i.name AS `Item Name`, available AS `Availability`, ic.name AS `Item Condition`, l.name AS `Location` FROM item AS i, item_condition AS ic, location AS l WHERE i.item_condition_id = ic.id AND i.location_id = l.id AND i.available = 0 ORDER BY i.id"; break;
+							//sql(4.3)
 							case '3': $sql = "SELECT i.id AS `Item ID`, i.name AS `Item Name`, available AS `Availability`, ic.name AS `Item Condition`, l.name AS `Location` FROM item AS i, item_condition AS ic, location AS l WHERE i.item_condition_id = ic.id AND i.location_id = l.id AND i.available = 1 ORDER BY i.id"; break;
+							//sql(4.4)
 							case '4':	$sql = "SELECT i.id AS `Item ID`, i.name AS `Item Name`, available AS `Availability`, ic.name AS `Item Condition`, l.name AS `Location` FROM item AS i, item_condition AS ic, location AS l WHERE i.item_condition_id = ic.id AND i.location_id = l.id AND LOWER(i.name) LIKE LOWER('bike%') ORDER BY i.id"; break;
+							//sql(4.5)
 							case '5': $sql = "SELECT i.id AS `Item ID`, i.name AS `Item Name`, available AS `Availability`, ic.name AS `Item Condition`, l.name AS `Location` FROM item AS i, item_condition AS ic, location AS l WHERE i.item_condition_id = ic.id AND i.location_id = l.id AND LOWER(i.name) LIKE LOWER('mac%') ORDER BY i.id"; break;
+							//sql(4.6)
 							case '6'; $sql = "SELECT i.id AS `Item ID`, i.name AS `Item Name`, available AS `Availability`, ic.name AS `Item Condition`, l.name AS `Location` FROM item AS i, item_condition AS ic, location AS l WHERE i.item_condition_id = ic.id AND i.location_id = l.id AND LOWER(i.name) LIKE LOWER('pc%') ORDER BY i.id"; break;
 						}
 

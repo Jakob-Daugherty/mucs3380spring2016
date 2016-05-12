@@ -28,6 +28,7 @@
             printf("Connect failed: %s\n", mysqli_connect_error());
             exit();
           }
+      //sql(6.0)
       $sql = "INSERT INTO item_condition (id, name) VALUES (?, ?)";
       if ($stmt = mysqli_prepare($link, $sql)) {
         $id = $_POST['id'];

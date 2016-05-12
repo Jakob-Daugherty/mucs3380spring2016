@@ -109,6 +109,7 @@ if (mysqli_connect_errno()) {
   printf("Connect failed: %s\n", mysqli_connect_error());
   exit();
 }
+//sql(1)
 $sql = "
 SELECT 
 i.id AS `Item ID`, 

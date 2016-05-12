@@ -31,6 +31,7 @@
             printf("Connect failed: %s\n", mysqli_connect_error());
             exit();
           }
+      //sql(7.0)
       $sql = "INSERT INTO item (id, name, available, item_condition_id, location_id) VALUES (?, ?, 1, 1, ?)";
       if ($stmt = mysqli_prepare($link, $sql)) {
         $id = $_POST['id'];

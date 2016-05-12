@@ -43,7 +43,7 @@
 									echo '<div class="row"><div class="input-group">';
 									echo "<div class='form-group'><label class='inputdefault'>Update Condition</label><select name='Item Condition' style='color:black;'>";
 
-									$result = mysqli_query($link, "SELECT id, name FROM item_condition ORDER BY id;");
+									$result = mysqli_query($link, "SELECT id, name FROM item_condition ORDER BY id;");//sql(11.0)
 									$i=0;
 									while ($row = mysqli_fetch_assoc($result)) {
 											foreach ($row as $column_value => $row_value) {
@@ -64,6 +64,7 @@
 								}
 
 								if(isset($_POST['submit'])) {
+									//sql(11.1)
 									$sql = "UPDATE item SET item_condition_id='".$_POST['Item_Condition']."' WHERE name='".$_POST['Item_Name']."'";
 									if ($stmt = mysqli_prepare($link, $sql)) {
 										//mysqli_stmt_bind_param($stmt, "ss", $_POST['Item_Condition'], $_POST['Item_Name']) or die("bind param");

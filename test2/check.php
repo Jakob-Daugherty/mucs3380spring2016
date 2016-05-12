@@ -98,6 +98,9 @@ require_once 'db.conf'; //db info
         ?>
       </body>
       </html>
+      
+      
+      
 <!--The MIT License (MIT)
 Copyright (c) 2016 Hunter Ginther, Jakob Daugherty, Zach Dolan, Kevin Free, Michael McLaughlin, and Alyssa Nielsen 
 

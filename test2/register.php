@@ -77,6 +77,7 @@ if(isset($_SESSION["username"]) && isset($_SESSION["user_type"])) {
                     printf("Connect failed: %s\n", mysqli_connect_error());
                     exit();
                 }
+                //sql(3.0)
                 $sql = "INSERT INTO employee (id,username,user_type,email,salt,hashed_password, name_first, name_last) VALUES (?,?,?,?,?,?,?,?)";
                 if ($stmt = mysqli_prepare($link, $sql)) {
                   $user = $_POST['username'];
