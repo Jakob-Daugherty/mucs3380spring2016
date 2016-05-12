@@ -1,5 +1,5 @@
 <?php
-	session_start();
+session_start();
   if (!isset($_SERVER['HTTPS']) || !$_SERVER['HTTPS']) { // if request is not secure, redirect to secure url
     $url = 'https://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
     header('Location: ' . $url);
@@ -11,16 +11,15 @@
   } else {
     header("Location: index.php");
   }
-?>
-    <html>
-    <head>
-    	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-    	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
-    	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-	<link rel="stylesheet" type="text/css" href="style.css">
-    </head>
-    <body>
-<div class="insert" style="width: 100%">
+  ?>
+  <html>
+  <head>
+    <?php
+    include 'header.html';
+    ?>
+  </head>
+  <body>
+    <div class="insert" style="width: 100%">
     	<div class="container">
     		<div class="row">
     			<div class="col-md-4 col-sm-4 col-xs-3"></div>
@@ -35,22 +34,22 @@
                   <option value='location' style="color:black;">Location</option></select>
                 </div>
                 <input class="btn btn-info" type="submit" name="submit" value="go"/>
-    			</div>
-        </form>
+              </div>
+            </form>
 
-        <?php
-        if(isset($_GET['table'])){
-          $include_page = "insertfolder/insert_" . $_GET['table'] . ".php";
-          include $include_page;
-        }
-        ?>
+            <?php
+            if(isset($_GET['table'])){
+              $include_page = "insertfolder/insert_" . $_GET['table'] . ".php";
+              include $include_page;
+            }
+            ?>
 
-    		</div>
-	</div>
-			</div>
+          </div>
+        </div>
+      </div>
     </div>
-		</body>
-		</html>
+  </body>
+  </html>
 
 
 

@@ -7,10 +7,7 @@
     	header('Location: ' . $url);
     }
     if(isset($_SESSION["username"]) && isset($_SESSION["user_type"])) {
-    	if($_SESSION["user_type"] != 1) {
-    		echo "<h4>You must be admin to edit entries</h4>";
-				echo "<a href='inventory.php' class='btn btn-primary text'>Back</a>";
-    	}
+
     } else {
     	header("Location: index.php");
     }
@@ -32,51 +29,55 @@
     			<div class="col-md-4 col-sm-4 col-xs-6">
 
 						<?php
-							$link = mysqli_connect("localhost", "kcfk28", "gz4kqe8h", "FinalProject") or die ("Connection Error " . mysqli_error($link));
+							if($_SESSION["user_type"] != 1) {
+								echo "<h4>You must be admin to edit entries</h4>";
+								echo "<a href='inventory.php' class='btn btn-primary text'>Back</a>";
+							} else {
+								$link = mysqli_connect("localhost", "kcfk28", "gz4kqe8h", "FinalProject") or die ("Connection Error " . mysqli_error($link));
 
-							if(isset($_POST['update'])) {
-								echo "<h2>Edit the condition of " . $_POST['Item_Name'] . "</h2>";
-								echo "<h4>Currently set as " . $_POST['Item_Condition'] . "</h4><br>";
+								if(isset($_POST['update'])) {
+									echo "<h2>Edit the condition of " . $_POST['Item_Name'] . "</h2>";
+									echo "<h4>Currently set as " . $_POST['Item_Condition'] . "</h4><br>";
 
-								echo '<form action="edit.php" method="POST" class="col-md-4 col-md-offset-4">';
-								echo '<div class="row"><div class="input-group">';
-								echo "<div class='form-group'><label class='inputdefault'>Update Condition</label><select name='Item Condition' style='color:black;'>";
+									echo '<form action="edit.php" method="POST" class="col-md-4 col-md-offset-4">';
+									echo '<div class="row"><div class="input-group">';
+									echo "<div class='form-group'><label class='inputdefault'>Update Condition</label><select name='Item Condition' style='color:black;'>";
 
-								$result = mysqli_query($link, "SELECT id, name FROM item_condition ORDER BY id;");
-								$i=0;
-								while ($row = mysqli_fetch_assoc($result)) {
-										foreach ($row as $column_value => $row_value) {
-												if ($i == 0) {
-													echo "<option value='$row_value' style='color:black;'>";
-													$i = 1;
-												} else {
-													echo "$row_value</option>";
-													$i = 0;
-												}
-										}
-								}
-
-								echo '</select></div>';
-								echo '<input type="hidden" name="Item_Name" value="'.$_POST['Item_Name'].'"/>';
-								echo '<input class=" btn btn-info" type="submit" name="submit" value="Go"/></div></div></form>';
-								echo "<a href='inventory.php' class='btn btn-primary text'>Back to Inventory</a>";
-							}
-
-							if(isset($_POST['submit'])) {
-								$sql = "UPDATE item SET item_condition_id='".$_POST['Item_Condition']."' WHERE name='".$_POST['Item_Name']."'";
-								if ($stmt = mysqli_prepare($link, $sql)) {
-									//mysqli_stmt_bind_param($stmt, "ss", $_POST['Item_Condition'], $_POST['Item_Name']) or die("bind param");
-									if(mysqli_stmt_execute($stmt)) {
-										echo "<h2>Successfully Updated Condition</h2>";
-									} else {
-										echo "<h2>Insert failed on execution</h2>";
+									$result = mysqli_query($link, "SELECT id, name FROM item_condition ORDER BY id;");
+									$i=0;
+									while ($row = mysqli_fetch_assoc($result)) {
+											foreach ($row as $column_value => $row_value) {
+													if ($i == 0) {
+														echo "<option value='$row_value' style='color:black;'>";
+														$i = 1;
+													} else {
+														echo "$row_value</option>";
+														$i = 0;
+													}
+											}
 									}
-								} else {
-									echo "<h2>Insert failed on preparation</h2>";
-								}
-								echo "<a href='inventory.php' class='btn btn-primary text'>Back to Inventory</a>";
-							}
 
+									echo '</select></div>';
+									echo '<input type="hidden" name="Item_Name" value="'.$_POST['Item_Name'].'"/>';
+									echo '<input class=" btn btn-info" type="submit" name="submit" value="Go"/></div></div></form>';
+									echo "<a href='inventory.php' class='btn btn-primary text'>Back to Inventory</a>";
+								}
+
+								if(isset($_POST['submit'])) {
+									$sql = "UPDATE item SET item_condition_id='".$_POST['Item_Condition']."' WHERE name='".$_POST['Item_Name']."'";
+									if ($stmt = mysqli_prepare($link, $sql)) {
+										//mysqli_stmt_bind_param($stmt, "ss", $_POST['Item_Condition'], $_POST['Item_Name']) or die("bind param");
+										if(mysqli_stmt_execute($stmt)) {
+											echo "<h2>Successfully Updated Condition</h2>";
+										} else {
+											echo "<h2>Insert failed on execution</h2>";
+										}
+									} else {
+										echo "<h2>Insert failed on preparation</h2>";
+									}
+									echo "<a href='inventory.php' class='btn btn-primary text'>Back to Inventory</a>";
+								}
+							}
 						 ?>
 					 </div>
 				 </div>

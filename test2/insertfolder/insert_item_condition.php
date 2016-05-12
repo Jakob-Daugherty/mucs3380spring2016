@@ -22,7 +22,12 @@
   </form>
   <?php
     if(isset($_POST['submit'])) {
-      $link = mysqli_connect("localhost", "kcfk28", "gz4kqe8h", "FinalProject") or die ("Connection Error " . mysqli_error($link));
+      require_once 'db.conf'; //db info
+          $link = new mysqli($dbhost, $dbuser, $dbpass, $dbname); //connect to db
+          if (mysqli_connect_errno()) {
+            printf("Connect failed: %s\n", mysqli_connect_error());
+            exit();
+          }
       $sql = "INSERT INTO item_condition (id, name) VALUES (?, ?)";
       if ($stmt = mysqli_prepare($link, $sql)) {
         $id = $_POST['id'];
