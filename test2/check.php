@@ -97,14 +97,14 @@ if(!(isset($_SESSION["username"]) && isset($_SESSION["user_type"]) && isset($_SE
                                     
                                     $sql = "INSERT INTO student_item_transaction (student_id, item_id, employee_id, location_id, item_condition_id, transaction_type, transaction_datetime, checkout_window) VALUES (".$_POST['studentid'].",".$_POST['itemid'].",".$_SESSION['id'].",'1','2','Out','".$checkout."','".$checkoutDue."')";
                                     
-                                    echo("<div class='content'> <h1>right before insert query</h1></div>");
-                                    echo "<div class='content'><h1>student_id" . $_POST['studentid']. "<h1><h4></h4>";
-                                    echo "<div class='content'><h1>item_id" . $_POST['itemid']. "<h1><h4></h4>";
-                                    echo "<div class='content'><h1>employee_id" . $_SESSION['id']. "<h1><h4></h4>";
-                                    echo "<div class='content'><h1>transaction_datetime" . $checkout. "<h1><h4></h4>";
-                                    echo "<div class='content'><h1>checkout_window" . $checkoutDue. "<h1><h4></h4>";
+                                    //echo("<div class='content'> <h1>right before insert query</h1></div>");
+                                    //echo "<div class='content'><h1>student_id" . $_POST['studentid']. "<h1><h4></h4>";
+                                    //echo "<div class='content'><h1>item_id" . $_POST['itemid']. "<h1><h4></h4>";
+                                    //echo "<div class='content'><h1>employee_id" . $_SESSION['id']. "<h1><h4></h4>";
+                                    //echo "<div class='content'><h1>transaction_datetime" . $checkout. "<h1><h4></h4>";
+                                    //echo "<div class='content'><h1>checkout_window" . $checkoutDue. "<h1><h4></h4>";
 									mysqli_query($link, $sql);
-                                    echo("<div class='content'> <h1>right after insert query</h1></div>");
+                                    //echo("<div class='content'> <h1>right after insert query</h1></div>");
                                     mysqli_stmt_close($stmt);
 									echo("<div class='content'> <h1>Item Was Checked Out</h1></div>");
 								} else if(0 == $arr['available']){
