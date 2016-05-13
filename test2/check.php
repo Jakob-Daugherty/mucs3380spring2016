@@ -115,6 +115,10 @@ if(!(isset($_SESSION["username"]) && isset($_SESSION["user_type"]) && isset($_SE
 									$sql.=$arr['id'];
 									$itemid = $arr['id'];
 									$sql.=";";
+									//$sql.="INSERT INTO student_item_transaction (item_id, employee_id, location_id, item_condition_id, transaction_type, transaction_datetime) VALUES (".$_POST['itemid'].",".$_SESSION['id'].",'1','2','IN','".$scheckout."')";
+									//$sql.=";";
+									mysqli_query($link, $sql);
+									$sql="INSERT INTO student_item_transaction (item_id, employee_id, location_id, item_condition_id, transaction_type, transaction_datetime) VALUES (".$_POST['itemid'].",".$_SESSION['id'].",'1','2','IN','".$checkout."');";
 									mysqli_query($link, $sql);
 									echo("<div class='content'> <h1>Item Was Checked In</h1></div>");
                                 } else {
