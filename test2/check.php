@@ -6,7 +6,7 @@ if (!isset($_SERVER['HTTPS']) || !$_SERVER['HTTPS']) { // if request is not secu
     $url = 'https://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
     header('Location: ' . $url);
   }
-if(!(isset($_SESSION["username"]) && isset($_SESSION["user_type"]))) {
+if(!(isset($_SESSION["username"]) && isset($_SESSION["user_type"]) && isset($_SESSION["id"]))) {
     header("Location: index.php");
 }
 ?>
@@ -78,18 +78,34 @@ if(!(isset($_SESSION["username"]) && isset($_SESSION["user_type"]))) {
                                 if( $studentid != null && 1 == $arr['available']){
 									//echo'Item is availible';
                                     $checkout = date("Y-m-d H:i:s");
-									$checkoutDue = date("Y-m-d H:i:s", strtotime('+2 hours'));
+									//$checkout = NOW();
+                                    $checkoutDue = date("Y-m-d H:i:s", strtotime('+2 hours'));
+                                    //$checkoutDue = NOW(), strtotime('+2 hours');
 									$studID = $_POST['studentid'];
 									$sql = "UPDATE item SET available= 0 WHERE id = ";
 									$sql.=$arr['id'];
 									$itemid = $arr['id'];
 									$sql.=";";
 									mysqli_query($link, $sql);
-									$sql = "INSERT INTO student_item_transaction (student_id, item_id, employee_id,";
-									$sql.= "location_id, item_condition_id, transaction_datetime, checkout_window) VALUES (";
-									$sql.=$studID.",";
-									$sql.=$itemid.",".$_SESSION['id'].",1,1,'".$checkout."','".$checkoutDue."');";
-									mysqli_query($link, $sql);		
+                                    mysqli_stmt_close($stmt);
+                                    
+                                   //echo "<div class='content'><h1>Welcome " . $_SESSION['id']. "<h1><h4>Here are the current items.</h4>";
+									//$sql = "INSERT INTO student_item_transaction (student_id, item_id, employee_id,";
+									//$sql.= "location_id, item_condition_id, transaction_type, transaction_datetime, checkout_window) VALUES (";
+									//$sql.=$studID.",";
+									//$sql.=$itemid.",".$_SESSION['id'].",1,1,'Out','".$checkout."','".$checkoutDue."');";
+                                    
+                                    $sql = "INSERT INTO student_item_transaction (student_id, item_id, employee_id, location_id, item_condition_id, transaction_type, transaction_datetime, checkout_window) VALUES (".$_POST['studentid'].",".$_POST['itemid'].",".$_SESSION['id'].",'1','2','Out','".$checkout."','".$checkoutDue."')";
+                                    
+                                    echo("<div class='content'> <h1>right before insert query</h1></div>");
+                                    echo "<div class='content'><h1>student_id" . $_POST['studentid']. "<h1><h4></h4>";
+                                    echo "<div class='content'><h1>item_id" . $_POST['itemid']. "<h1><h4></h4>";
+                                    echo "<div class='content'><h1>employee_id" . $_SESSION['id']. "<h1><h4></h4>";
+                                    echo "<div class='content'><h1>transaction_datetime" . $checkout. "<h1><h4></h4>";
+                                    echo "<div class='content'><h1>checkout_window" . $checkoutDue. "<h1><h4></h4>";
+									mysqli_query($link, $sql);
+                                    echo("<div class='content'> <h1>right after insert query</h1></div>");
+                                    mysqli_stmt_close($stmt);
 									echo("<div class='content'> <h1>Item Was Checked Out</h1></div>");
 								} else if(0 == $arr['available']){
                                     $checkout = date("Y-m-d H:i:s");
@@ -99,7 +115,7 @@ if(!(isset($_SESSION["username"]) && isset($_SESSION["user_type"]))) {
 									$sql.=$arr['id'];
 									$itemid = $arr['id'];
 									$sql.=";";
-									mysqli_query($link, $sql);		
+									mysqli_query($link, $sql);
 									echo("<div class='content'> <h1>Item Was Checked In</h1></div>");
                                 } else {
                                     echo("<div class='content'> <h1>Invalid Item ID or Student ID</h1></div>");

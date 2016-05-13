@@ -146,6 +146,7 @@ echo "<table class='table table-hover' style='color:black; background-color:whit
 //Creating the Column Headers
 $fields = mysqli_fetch_fields($result);
 foreach ($fields as $field) {
+
   echo "<th style='text-align:center;'>".$field->name."</th>";
 }
 
@@ -163,6 +164,7 @@ echo "<tr style='background-color:#FFFF00;'>";
 } else {
   echo "<tr>";
 }
+
 for ($i = 0; $i < mysqli_num_fields($result); $i++) { //iterate for each column
   echo "<td><input type='hidden' name='".mysqli_fetch_field_direct($result, $i)->name."' value='".$row[$i]."'>".$row[$i]."</td>";
 }
