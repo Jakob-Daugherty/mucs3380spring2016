@@ -19,7 +19,6 @@ if(!(isset($_SESSION["username"]) && isset($_SESSION["user_type"]))) {
   <?php
   include 'nav.php';
   ?>
-
   <div class="content" style="width: 100%">
     <!-- <div class="row"> -->
     <form action="<?=$_SERVER['PHP_SELF']?>" method="POST" class="col-md-4 col-md-offset-4">
@@ -92,20 +91,11 @@ require_once 'db.conf'; //db info
 
          echo "</tbody></table>";
        }
-
        mysqli_free_result($result);
-
        ?>
-       <!--   </div> -->
      </div>
-     
-<!--         <div class="row form-group">
-                <a href="welcome.php" class="btn btn-primary text">Home</a>
-              </div>
-            </div> -->
-
-          </body>
-          </html>
+   </body>
+   </html>
 
 		<!--The MIT License (MIT)
 		Copyright (c) 2016 Hunter Ginther, Jakob Daugherty, Zach Dolan, Kevin Free, Michael McLaughlin, and Alyssa Nielsen
