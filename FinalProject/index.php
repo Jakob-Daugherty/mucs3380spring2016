@@ -30,9 +30,6 @@ if(isset($_SESSION["username"]) && isset($_SESSION["user_type"])) {
       <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
         <ul class="nav navbar-nav">
           <li class="active"><a href="index.php">Home<span class="sr-only">(current)</span></a></li>
-<!--           <li><a href="shoppingcart.php">Search</a></li>
-          <li><a href="check.php">Check in/out</a></li>
-          <li><a href="inventory.php">Inventory</a></li> -->
         </ul>
         <form class="navbar-form navbar-left" action="index.php" method="POST">
           <div class="form-group">
@@ -70,17 +67,18 @@ if(isset($_SESSION["username"]) && isset($_SESSION["user_type"])) {
             exit();
           }
 
-          $sql = "SELECT salt, hashed_password, user_type FROM employee WHERE username=?";
+          $sql = "SELECT salt, hashed_password, user_type,id FROM employee WHERE username=?";
           if($stmt = mysqli_prepare($link, $sql)) {
             $user = htmlspecialchars((string)$_POST['username']);
             $password = htmlspecialchars((string)$_POST['password']);
             mysqli_stmt_bind_param($stmt, "s", $user) or die("bind param");
             if(mysqli_stmt_execute($stmt)){
-              mysqli_stmt_bind_result($stmt, $salt ,$hpass, $uType);
+              mysqli_stmt_bind_result($stmt, $salt ,$hpass, $uType,$id);
               if(mysqli_stmt_fetch($stmt)){
                 if(password_verify($salt.$password, $hpass)){
                   $_SESSION["username"] = $user;
                   $_SESSION["user_type"] = $uType;
+                    $_SESSION["id"] = $id;
                                                                        // echo "<h4>Session started</h4>";
                   echo "<script> window.location.assign('welcome.php'); </script>";
                 } else {

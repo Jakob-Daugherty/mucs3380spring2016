@@ -60,7 +60,7 @@ if(!(isset($_SESSION["username"]) && isset($_SESSION["user_type"]))) {
     mysqli_stmt_execute($stmt);
     $result = mysqli_stmt_get_result($stmt);
   }
-  if (mysqli_num_rows($result) == 0) {echo "The student has no items checked out";}
+  if (mysqli_num_rows($result) == 0) {echo "No results";}
 else {
   echo "<table class='table' style='background-color:white; color:black; border-radius: 5px;'><thead><tr>";
   echo "<td><u>First Name</u></td><td><u>Last Name</u></td><td><u>Pawprint</u></td><td><u>Email</u></td><td><u>Items Checked Out</u></td></tr>";
