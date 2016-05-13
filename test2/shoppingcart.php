@@ -23,11 +23,12 @@ if(!(isset($_SESSION["username"]) && isset($_SESSION["user_type"]))) {
     echo "<div class='content'><h1>ERROR</h1><h4>You must be logged in to view content</h4></div>";
   }
   else {
-    echo "<div class='content'><h1>Shopping Cart Search</h1><form action='/mucs3380spring2016/test2/shoppingcart.php' method='POST'>
+    echo "<div class='content'><h1>Search for students with items checked out</h1><form action='/mucs3380spring2016/test2/shoppingcart.php' method='POST'>
     <div class='form-group'>
       <input type='text' name='search' class='form-control' placeholder='Search for a student'>
-      <label class='radio-inline'><input type='radio' name='radio' value=1 checked>ID</label>
-      <label class='radio-inline'><input type='radio' name='radio' value=2>Pawprint</label>
+      <label class='radio-inline'><input type='radio' name='radio' value=0>Item ID</label>
+      <label class='radio-inline'><input type='radio' name='radio' value=1>Student ID</label>
+      <label class='radio-inline'><input type='radio' name='radio' value=2 checked>Pawprint</label>
       <label class='radio-inline'><input type='radio' name='radio' value=3>Last Name</label><br>
       <button type='submit' name='submit' class='btn btn-default'>Search</button>
     </form></div>";	
@@ -39,33 +40,36 @@ if(!(isset($_SESSION["username"]) && isset($_SESSION["user_type"]))) {
     printf("Connect failed: %s\n", mysqli_connect_error());
     exit();
   }
-  switch ($_POST['radio']){ //test which radio is checked
+  switch ($_POST['radio']){
+    case 0:
+    $sql = "SELECT name_first, name_last, username, email, name FROM student s INNER JOIN student_item_transaction sit ON s.id = sit.student_id INNER JOIN item i ON i.id = sit.item_id WHERE i.id = ? AND i.available = 0";
+    break;
     case 1:
-    //sql(2)
-    $sql = "SELECT student.name_first, student.name_last, student.username, student.email, item.name FROM student inner join item on student.id = item.id where student.id = ?";
+    $sql = "SELECT name_first, name_last, username, email, name FROM student s INNER JOIN student_item_transaction sit ON s.id = sit.student_id INNER JOIN item i ON i.id = sit.item_id WHERE s.id = ? AND i.available = 0";
     break;
     case 2:
-    //sql(2.1)
-    $sql = "SELECT student.name_first, student.name_last, student.username, student.email, item.name FROM student inner join item on student.id = item.id where student.username = ?";
+    $sql = "SELECT name_first, name_last, username, email, name FROM student s INNER JOIN student_item_transaction sit ON s.id = sit.student_id INNER JOIN item i ON i.id = sit.item_id WHERE s.username = ? AND i.available = 0";
     break;
     case 3:
-    //sql(2.2)
-    $sql = "SELECT student.name_first, student.name_last, student.username, student.email, item.name FROM student inner join item on student.id = item.id where student.name_last = ?";
+    $sql = "SELECT name_first, name_last, username, email, name FROM student s INNER JOIN student_item_transaction sit ON s.id = sit.student_id INNER JOIN item i ON i.id = sit.item_id WHERE s.name_last = ? AND i.available = 0";
     break;
-  }
-  $userinput = $_POST['search']; //values of the search bar
+     }
+  $userinput = $_POST['search'];
   if ($stmt = mysqli_prepare($link, $sql)) {
     mysqli_stmt_bind_param($stmt, "s", $userinput);
     mysqli_stmt_execute($stmt);
     $result = mysqli_stmt_get_result($stmt);
-  } //reparing, binding, executing and gettin the results of the query
-  echo "<table class='table shoppingcart'><thead><tr>";
-  echo "<td>First Name</td><td>Last Name</td><td>Pawprint</td><td>Email</td><td>Items Checked Out</td></tr>"; //creating table headers
-  while ($row=mysqli_fetch_row($result)) //fetch the values of each row
+  }
+  if (mysqli_num_rows($result) == 0) {echo "The student has no items checked out";}
+else {
+  echo "<table class='table' style='background-color:white; color:black; border-radius: 5px;'><thead><tr>";
+  echo "<td><u>First Name</u></td><td><u>Last Name</u></td><td><u>Pawprint</u></td><td><u>Email</u></td><td><u>Items Checked Out</u></td></tr>";
+  while ($row=mysqli_fetch_row($result))
   {
     echo "<td>".$row[0]."</td><td>".$row[1]."</td><td>".$row[2]."</td><td>".$row[3]."</td><td>".$row[4]."</tr>";
   }
   echo "</table>";
+  }
   }
   }
   ?>

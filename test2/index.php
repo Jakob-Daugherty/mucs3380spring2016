@@ -30,9 +30,9 @@ if(isset($_SESSION["username"]) && isset($_SESSION["user_type"])) {
       <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
         <ul class="nav navbar-nav">
           <li class="active"><a href="index.php">Home<span class="sr-only">(current)</span></a></li>
-          <li><a href="shoppingcart.php">Shopping Cart</a></li>
+<!--           <li><a href="shoppingcart.php">Search</a></li>
           <li><a href="check.php">Check in/out</a></li>
-          <li><a href="inventory.php">Inventory</a></li>
+          <li><a href="inventory.php">Inventory</a></li> -->
         </ul>
         <form class="navbar-form navbar-left" action="index.php" method="POST">
           <div class="form-group">
@@ -69,7 +69,7 @@ if(isset($_SESSION["username"]) && isset($_SESSION["user_type"])) {
             printf("Connect failed: %s\n", mysqli_connect_error());
             exit();
           }
-		  //sql(10.0)
+
           $sql = "SELECT salt, hashed_password, user_type FROM employee WHERE username=?";
           if($stmt = mysqli_prepare($link, $sql)) {
             $user = htmlspecialchars((string)$_POST['username']);
@@ -95,9 +95,10 @@ if(isset($_SESSION["username"]) && isset($_SESSION["user_type"])) {
     </body>
     </html>
 
-<!--The MIT License (MIT)
-Copyright (c) 2016 Hunter Ginther, Jakob Daugherty, Zach Dolan, Kevin Free, Michael McLaughlin, and Alyssa Nielsen 
+    <!--The MIT License (MIT)
+Copyright (c) 2016 Hunter Ginther, Jakob Daugherty, Zach Dolan, Kevin Free, Michael McLaughlin, and Alyssa Nielsen
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.-->
+

@@ -31,7 +31,6 @@
             printf("Connect failed: %s\n", mysqli_connect_error());
             exit();
           }
-      //sql(8.0)
       $sql = "INSERT INTO location (id, name, terminal_id) VALUES (?, ?, ?)";
       if ($stmt = mysqli_prepare($link, $sql)) {
         $id = $_POST['id'];

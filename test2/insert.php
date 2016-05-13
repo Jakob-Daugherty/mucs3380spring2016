@@ -19,6 +19,9 @@ session_start();
     ?>
   </head>
   <body>
+    <?php
+  include 'nav.php';
+  ?>
     <div class="insert" style="width: 100%">
     	<div class="container">
     		<div class="row">

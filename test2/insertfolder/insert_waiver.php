@@ -28,7 +28,6 @@
             printf("Connect failed: %s\n", mysqli_connect_error());
             exit();
           }
-      //sql(9.0)
       $sql = "INSERT INTO waiver (id, name) VALUES (?, ?)";
       if ($stmt = mysqli_prepare($link, $sql)) {
         $id = $_POST['id'];
