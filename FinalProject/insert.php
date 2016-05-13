@@ -39,14 +39,12 @@ session_start();
                 <input class="btn btn-info" type="submit" name="submit" value="go"/>
               </div>
             </form>
-
             <?php
             if(isset($_GET['table'])){
               $include_page = "insertfolder/insert_" . $_GET['table'] . ".php";
               include $include_page;
             }
             ?>
-
           </div>
         </div>
       </div>
