@@ -30,9 +30,6 @@ if(isset($_SESSION["username"]) && isset($_SESSION["user_type"])) {
       <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
         <ul class="nav navbar-nav">
           <li class="active"><a href="index.php">Home<span class="sr-only">(current)</span></a></li>
-<!--           <li><a href="shoppingcart.php">Search</a></li>
-          <li><a href="check.php">Check in/out</a></li>
-          <li><a href="inventory.php">Inventory</a></li> -->
         </ul>
         <form class="navbar-form navbar-left" action="index.php" method="POST">
           <div class="form-group">

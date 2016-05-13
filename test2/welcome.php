@@ -113,15 +113,15 @@ $sql = "
 SELECT 
 i.id AS `Item ID`, 
 i.name AS `Item Name`,
-(SELECT sit.student_id FROM student_item_transaction AS sit WHERE sit.item_id = i.id AND sit.transaction_datetime >= CURDATE() AND sit.transaction_type = 'Out' AND sit.checkout_window = 
-(SELECT MAX(sit.checkout_window) FROM student_item_transaction WHERE item_id = sit.item_id)) AS `Student`,
-(SELECT sit.employee_id FROM student_item_transaction AS sit WHERE sit.item_id = i.id AND sit.transaction_datetime >= CURDATE() AND sit.transaction_type = 'Out' AND sit.checkout_window = 
-(SELECT MAX(sit.checkout_window) FROM student_item_transaction WHERE item_id = sit.item_id)) AS `Employee`,
+(SELECT DISTINCT sit.student_id FROM student_item_transaction AS sit WHERE sit.item_id = i.id AND sit.transaction_datetime >= CURDATE() AND i.available = 0 AND sit.transaction_type = 'Out' AND sit.checkout_window = 
+(SELECT MAX(sit.checkout_window) FROM student_item_transaction WHERE item_id = sit.item_id ORDER BY sit.checkout_window DESC LIMIT 1) LIMIT 1) AS `Student`,
+(SELECT DISTINCT sit.employee_id FROM student_item_transaction AS sit WHERE sit.item_id = i.id AND sit.transaction_datetime >= CURDATE() AND i.available = 0 AND sit.transaction_type = 'Out' AND sit.checkout_window = 
+(SELECT MAX(sit.checkout_window) FROM student_item_transaction WHERE item_id = sit.item_id ORDER BY sit.checkout_window DESC LIMIT 1) LIMIT 1) AS `Employee`,
 available AS `Availability`, 
 ic.name AS `Item Condition`, 
 l.name AS `Location`,
-(SELECT sit.checkout_window FROM student_item_transaction AS sit WHERE sit.item_id = i.id AND sit.transaction_datetime >= CURDATE() AND sit.transaction_type = 'Out' AND sit.checkout_window = 
-(SELECT MAX(sit.checkout_window) FROM student_item_transaction WHERE item_id = sit.item_id)) AS `Time Due Back`
+(SELECT sit.checkout_window FROM student_item_transaction AS sit WHERE sit.item_id = i.id AND sit.transaction_datetime >= CURDATE() AND i.available = 0 AND sit.transaction_type = 'Out' AND sit.checkout_window = 
+(SELECT MAX(sit.checkout_window) FROM student_item_transaction WHERE item_id = sit.item_id ORDER BY sit.checkout_window DESC LIMIT 1) LIMIT 1) AS `Time Due Back`
 FROM 
 item AS i, 
 item_condition AS ic, 
